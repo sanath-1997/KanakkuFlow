@@ -97,7 +97,11 @@ export function useKanakku() {
 
   const addCategory = (cat: Omit<Category, 'id'>) => {
     const newId = Math.random().toString(36).substring(2, 11);
-    setCategories(prev => [...prev, { ...cat, id: newId }]);
+    setCategories(prev => {
+      const exists = prev.find(c => c.name.toLowerCase() === cat.name.toLowerCase() && c.type === cat.type);
+      if (exists) return prev;
+      return [...prev, { ...cat, id: newId }];
+    });
   };
 
   const removeCategory = (id: string) => {

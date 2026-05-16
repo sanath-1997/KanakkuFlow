@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { translations, type Language } from '@/lib/translations';
-import { Trash2, Tag, TrendingUp, TrendingDown, Save, Check } from 'lucide-react';
+import { Trash2, Tag, TrendingUp, TrendingDown, Plus, Check } from 'lucide-react';
 import type { Category } from '@/hooks/use-kanakku';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -29,7 +29,11 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
 
   const handleAdd = () => {
     if (!newName.trim()) return;
-    onAdd({ name: newName.trim(), emoticon: newEmoji, type: activeTab });
+    onAdd({ 
+      name: newName.trim(), 
+      emoticon: newEmoji, 
+      type: activeTab 
+    });
     setNewName('');
     setNewEmoji('📦');
   };
@@ -38,7 +42,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] rounded-[2rem] h-[85vh] flex flex-col overflow-hidden p-0 gap-0 border-none shadow-2xl">
+      <DialogContent className="sm:max-w-[450px] rounded-[2rem] h-[90vh] flex flex-col overflow-hidden p-0 gap-0 border-none shadow-2xl">
         <DialogHeader className="px-8 pt-8 pb-4 shrink-0">
           <DialogTitle className="text-2xl font-headline flex items-center gap-2">
             <Tag className="w-6 h-6 text-primary" /> {t.categoryStudio}
@@ -60,6 +64,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
           </TabsList>
 
           <div className="flex-1 overflow-y-auto space-y-6 pb-6 pr-2 custom-scrollbar min-h-0">
+            {/* Input Form */}
             <div className="bg-muted/30 p-5 rounded-2xl space-y-4 border border-border/50 shrink-0">
               <div className="space-y-2">
                 <Label className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">{t.categoryName}</Label>
@@ -87,17 +92,18 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
                 </div>
               </div>
               <Button onClick={handleAdd} className="w-full rounded-xl h-14 gap-2 font-headline text-base shadow-lg active:scale-95 transition-all">
-                <Save className="w-5 h-5" /> {t.save}
+                <Plus className="w-5 h-5" /> {t.addCategory}
               </Button>
             </div>
 
+            {/* Category List */}
             <div className="space-y-3">
               <Label className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">
                 {activeTab === 'income' ? t.incomeCategories : t.expenseCategories}
               </Label>
               <div className="space-y-2">
                 {filteredCategories.length === 0 ? (
-                  <div className="bg-white/50 border-2 border-dashed rounded-2xl py-8 text-center">
+                  <div className="bg-white/50 border-2 border-dashed rounded-2xl py-12 text-center">
                     <p className="text-sm text-muted-foreground italic">No categories yet</p>
                   </div>
                 ) : (
