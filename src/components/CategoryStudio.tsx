@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { translations, type Language } from '@/lib/translations';
 import { Trash2, Tag, TrendingUp, TrendingDown, Save, Check } from 'lucide-react';
 import type { Category } from '@/hooks/use-kanakku';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface CategoryStudioProps {
   isOpen: boolean;
@@ -38,14 +38,18 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] rounded-[2rem] max-h-[90vh] flex flex-col overflow-hidden p-0 gap-0">
+      <DialogContent className="sm:max-w-[425px] rounded-[2rem] h-[85vh] flex flex-col overflow-hidden p-0 gap-0 border-none shadow-2xl">
         <DialogHeader className="px-8 pt-8 pb-4 shrink-0">
           <DialogTitle className="text-2xl font-headline flex items-center gap-2">
             <Tag className="w-6 h-6 text-primary" /> {t.categoryStudio}
           </DialogTitle>
         </DialogHeader>
         
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full flex-1 flex flex-col px-8 overflow-hidden">
+        <Tabs 
+          value={activeTab} 
+          onValueChange={(v) => setActiveTab(v as any)} 
+          className="w-full flex-1 flex flex-col px-8 overflow-hidden min-h-0"
+        >
           <TabsList className="grid grid-cols-2 mb-6 rounded-xl bg-muted/50 p-1 shrink-0">
             <TabsTrigger value="expense" className="rounded-lg gap-2 data-[state=active]:bg-white data-[state=active]:text-expense">
               <TrendingDown className="w-4 h-4" /> {t.expense}
@@ -55,8 +59,8 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
             </TabsTrigger>
           </TabsList>
 
-          <div className="flex-1 overflow-y-auto space-y-6 pb-6 pr-1 custom-scrollbar">
-            <div className="bg-muted/30 p-5 rounded-2xl space-y-4 border border-border/50">
+          <div className="flex-1 overflow-y-auto space-y-6 pb-6 pr-2 custom-scrollbar min-h-0">
+            <div className="bg-muted/30 p-5 rounded-2xl space-y-4 border border-border/50 shrink-0">
               <div className="space-y-2">
                 <Label className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">{t.categoryName}</Label>
                 <Input 

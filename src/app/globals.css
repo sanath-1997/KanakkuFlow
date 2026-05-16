@@ -59,6 +59,7 @@
     -moz-osx-font-smoothing: grayscale;
     font-family: 'Inter', sans-serif;
   }
+  /* Using direct font-family to avoid Tailwind @apply circular dependencies */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
