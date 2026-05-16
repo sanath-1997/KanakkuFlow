@@ -11,7 +11,6 @@ export interface Category {
 export interface Transaction {
   id: string;
   amount: number;
-  description: string;
   category: string;
   emoticon: string;
   type: 'income' | 'expense';

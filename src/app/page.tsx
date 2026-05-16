@@ -157,7 +157,7 @@ export default function Home() {
         </Button>
       </div>
 
-      {/* Pie Chart Section */}
+      {/* Spending Chart Section */}
       <div className="mb-10 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
         <SpendingChart transactions={transactions} title={t.spendingByCategory} />
       </div>
@@ -190,10 +190,8 @@ export default function Home() {
                     {tx.emoticon}
                   </div>
                   <div>
-                    <h4 className="font-bold text-base leading-tight mb-1">{tx.description}</h4>
+                    <h4 className="font-bold text-base leading-tight mb-1">{tx.category}</h4>
                     <div className="flex items-center gap-3 text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
-                      <span className="flex items-center gap-1"><Tag className="w-3 h-3" /> {tx.category}</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/20" />
                       <span>{format(new Date(tx.date), 'MMM dd, HH:mm')}</span>
                     </div>
                   </div>
