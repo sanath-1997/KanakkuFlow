@@ -18,7 +18,7 @@ export interface Transaction {
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
-  // Expenses
+  // Common Expenses
   { id: 'e1', name: 'Food', emoticon: '🍔', type: 'expense' },
   { id: 'e2', name: 'Groceries', emoticon: '🛒', type: 'expense' },
   { id: 'e3', name: 'Rent', emoticon: '🏠', type: 'expense' },
@@ -31,15 +31,18 @@ const DEFAULT_CATEGORIES: Category[] = [
   { id: 'e10', name: 'Education', emoticon: '🎓', type: 'expense' },
   { id: 'e11', name: 'Travel', emoticon: '✈️', type: 'expense' },
   { id: 'e12', name: 'Subscriptions', emoticon: '💻', type: 'expense' },
+  { id: 'e13', name: 'Maintenance', emoticon: '🔧', type: 'expense' },
+  { id: 'e14', name: 'Other', emoticon: '📦', type: 'expense' },
   
-  // Income
+  // Common Income
   { id: 'i1', name: 'Salary', emoticon: '💰', type: 'income' },
   { id: 'i2', name: 'Freelance', emoticon: '👨‍💻', type: 'income' },
   { id: 'i3', name: 'Bonus', emoticon: '🎁', type: 'income' },
   { id: 'i4', name: 'Investment', emoticon: '📈', type: 'income' },
   { id: 'i5', name: 'Gift', emoticon: '🧧', type: 'income' },
   { id: 'i6', name: 'Interest', emoticon: '🏦', type: 'income' },
-  { id: 'i7', name: 'Rental Income', emoticon: '🏘️', type: 'income' },
+  { id: 'i7', name: 'Business', emoticon: '🏢', type: 'income' },
+  { id: 'i8', name: 'Other', emoticon: '💵', type: 'income' },
 ];
 
 export function useKanakku() {
@@ -54,8 +57,29 @@ export function useKanakku() {
     const storedCategories = localStorage.getItem('kanakku-cats');
 
     if (storedLang) setLang(storedLang);
-    if (storedTransactions) setTransactions(JSON.parse(storedTransactions));
-    if (storedCategories) setCategories(JSON.parse(storedCategories));
+    if (storedTransactions) {
+      try {
+        setTransactions(JSON.parse(storedTransactions));
+      } catch (e) {
+        console.error("Failed to parse transactions", e);
+      }
+    }
+    
+    if (storedCategories) {
+      try {
+        const parsed = JSON.parse(storedCategories);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setCategories(parsed);
+        } else {
+          setCategories(DEFAULT_CATEGORIES);
+        }
+      } catch (e) {
+        console.error("Failed to parse categories", e);
+        setCategories(DEFAULT_CATEGORIES);
+      }
+    } else {
+      setCategories(DEFAULT_CATEGORIES);
+    }
     
     setIsHydrated(true);
   }, []);
@@ -69,7 +93,8 @@ export function useKanakku() {
   }, [lang, transactions, categories, isHydrated]);
 
   const addTransaction = (tx: Omit<Transaction, 'id'>) => {
-    const newTx = { ...tx, id: Math.random().toString(36).substr(2, 9) };
+    const newId = Math.random().toString(36).substring(2, 11);
+    const newTx = { ...tx, id: newId };
     setTransactions(prev => [newTx, ...prev]);
   };
 
@@ -78,7 +103,8 @@ export function useKanakku() {
   };
 
   const addCategory = (cat: Omit<Category, 'id'>) => {
-    setCategories(prev => [...prev, { ...cat, id: Math.random().toString(36).substr(2, 9) }]);
+    const newId = Math.random().toString(36).substring(2, 11);
+    setCategories(prev => [...prev, { ...cat, id: newId }]);
   };
 
   const removeCategory = (id: string) => {
