@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { translations, type Language } from '@/lib/translations';
-import { Plus, Trash2, Tag, TrendingUp, TrendingDown, Save, Check } from 'lucide-react';
+import { Trash2, Tag, TrendingUp, TrendingDown, Save, Check } from 'lucide-react';
 import type { Category } from '@/hooks/use-kanakku';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -19,7 +19,7 @@ interface CategoryStudioProps {
   onRemove: (id: string) => void;
 }
 
-const COMMON_EMOJIS = ['🍔', '🏠', '🚗', '💰', '💡', '🛍️', '🏥', '🎭', '🎓', '✈️', '🎁', '📈', '🍕', '💻', '🍿'];
+const COMMON_EMOJIS = ['🍔', '🛒', '🏠', '🚗', '💡', '🛍️', '🏥', '📦', '💰', '👨‍💻', '📈', '🎁', '🧧', '💵', '🍕', '💻', '🍿'];
 
 export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRemove }: CategoryStudioProps) {
   const t = translations[lang];
@@ -69,7 +69,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
               </div>
               <div className="space-y-2">
                 <Label className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">{t.emoticon}</Label>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-6 gap-2">
                   {COMMON_EMOJIS.map(emoji => (
                     <button
                       key={emoji}
@@ -83,7 +83,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
                 </div>
               </div>
               <Button onClick={handleAdd} className="w-full rounded-xl h-14 gap-2 font-headline text-base shadow-lg active:scale-95 transition-all">
-                <Save className="w-5 h-5" /> {t.addCategory}
+                <Save className="w-5 h-5" /> {t.save}
               </Button>
             </div>
 
@@ -107,7 +107,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
                         variant="ghost" 
                         size="icon" 
                         onClick={() => onRemove(cat.id)}
-                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl h-10 w-10 md:opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl h-10 w-10 opacity-100 transition-opacity"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
