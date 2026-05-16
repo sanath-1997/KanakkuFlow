@@ -15,6 +15,7 @@ export interface Transaction {
   emoticon: string;
   type: 'income' | 'expense';
   date: string;
+  description?: string;
 }
 
 const DEFAULT_CATEGORIES: Category[] = [

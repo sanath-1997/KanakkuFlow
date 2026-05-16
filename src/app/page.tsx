@@ -125,13 +125,14 @@ export default function Home() {
   const handleExport = () => {
     if (transactions.length === 0) return;
     
-    const headers = ['Date', 'Type', 'Category', 'Amount', 'Emoticon'];
+    const headers = ['Date', 'Type', 'Category', 'Description', 'Amount', 'Emoticon'];
     const csvRows = [
       headers.join(','),
       ...transactions.map(tx => [
         format(new Date(tx.date), 'yyyy-MM-dd HH:mm:ss'),
         tx.type,
         tx.category,
+        tx.description || '',
         tx.amount,
         tx.emoticon
       ].join(','))
@@ -400,6 +401,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-bold text-base leading-tight mb-1">{tx.category}</h4>
+                    {tx.description && <p className="text-xs text-muted-foreground mb-1 font-medium">{tx.description}</p>}
                     <div className="flex items-center gap-3 text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
                       <span>{format(new Date(tx.date), 'MMM dd, hh:mm a')}</span>
                     </div>

@@ -12,6 +12,7 @@ import {z} from 'genkit';
 
 const TransactionCategorySuggestionInputSchema = z.object({
   description: z.string().describe('The description of the transaction.'),
+  availableCategories: z.array(z.string()).optional().describe('A list of existing category names to choose from.'),
 });
 export type TransactionCategorySuggestionInput = z.infer<
   typeof TransactionCategorySuggestionInputSchema
@@ -37,7 +38,9 @@ const prompt = ai.definePrompt({
   output: {schema: TransactionCategorySuggestionOutputSchema},
   prompt: `You are an AI assistant specialized in financial transaction categorization.
 Your task is to suggest a suitable category and a single, representative emoticon for a given transaction description.
-Focus on common expense and income categories like groceries, transport, utilities, salary, rent, dining, entertainment, etc.
+
+If available, choose from these categories: {{#each availableCategories}}{{{this}}}, {{/each}}.
+If the description doesn't fit any of those, suggest a logical new category.
 
 Transaction Description: {{{description}}}
 `,
