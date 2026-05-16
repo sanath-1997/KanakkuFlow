@@ -1,3 +1,4 @@
+
 export type Language = 'en' | 'ta' | 'ml';
 
 export const translations = {
@@ -15,8 +16,6 @@ export const translations = {
     amount: 'Amount',
     date: 'Date',
     description: 'Description (e.g. Lunch at Office)',
-    smartSuggest: 'Smart Suggest',
-    aiThinking: 'AI is thinking...',
     save: 'Save',
     cancel: 'Cancel',
     spendingByCategory: 'Spending by Category',
@@ -46,6 +45,8 @@ export const translations = {
     monthlyLimit: 'Monthly Limit',
     currency: 'Currency',
     changeCurrency: 'Change Currency',
+    categoryRequired: 'Please select a category',
+    error: 'Error',
   },
   ta: {
     welcome: 'கணக்கு ஃப்ளோவிற்கு வரவேற்கிறோம்',
@@ -61,8 +62,6 @@ export const translations = {
     amount: 'தொகை',
     date: 'தேதி',
     description: 'விளக்கம் (எ.கா. அலுவலக மதிய உணவு)',
-    smartSuggest: 'ஸ்மார்ட் பரிந்துரை',
-    aiThinking: 'AI யோசிக்கிறது...',
     save: 'சேமி',
     cancel: 'ரத்து செய்',
     spendingByCategory: 'வகை வாரியாக செலவு',
@@ -92,6 +91,8 @@ export const translations = {
     monthlyLimit: 'மாதாந்திர வரம்பு',
     currency: 'நாணயம்',
     changeCurrency: 'நாணயத்தை மாற்றவும்',
+    categoryRequired: 'வகையைத் தேர்ந்தெடுக்கவும்',
+    error: 'பிழை',
   },
   ml: {
     welcome: 'കണക്ക് ഫ്ലോയിലേക്ക് സ്വാഗതം',
@@ -107,8 +108,6 @@ export const translations = {
     amount: 'തുക',
     date: 'തിയതി',
     description: 'വിവരണം (ഉദാ: ഓഫീസിലെ ഉച്ചഭക്ഷണം)',
-    smartSuggest: 'സ്മാർട്ട് നിർദ്ദേശം',
-    aiThinking: 'AI ചിന്തിക്കുന്നു...',
     save: 'സേവ് ചെയ്യുക',
     cancel: 'റദ്ദാക്കുക',
     spendingByCategory: 'വിഭാഗം തിരിച്ചുള്ള ചെലവ്',
@@ -138,5 +137,7 @@ export const translations = {
     monthlyLimit: 'പ്രതിമാസ പരിധി',
     currency: 'കറൻസി',
     changeCurrency: 'കറൻസി മാറ്റുക',
+    categoryRequired: 'ഒരു വിഭാഗം തിരഞ്ഞെടുക്കുക',
+    error: 'പിശക്',
   }
 };

@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState, useEffect } from 'react';
@@ -10,10 +11,10 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { Category, Transaction } from '@/hooks/use-kanakku';
 import { translations, type Language } from '@/lib/translations';
-import { Plus, CalendarIcon, Sparkles, Loader2 } from 'lucide-react';
+import { Plus, CalendarIcon } from 'lucide-react';
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { suggestTransactionCategory } from '@/ai/flows/transaction-category-suggestion';
+import { useToast } from "@/hooks/use-toast";
 
 interface TransactionModalProps {
   isOpen: boolean;
@@ -28,17 +29,15 @@ interface TransactionModalProps {
 
 export function TransactionModal({ isOpen, onClose, type, categories, lang, onAdd, onManageCategories, currency = '₹' }: TransactionModalProps) {
   const t = translations[lang];
+  const { toast } = useToast();
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedEmoticon, setSelectedEmoticon] = useState('');
   const [date, setDate] = useState<Date>(new Date());
-  const [isSuggesting, setIsSuggesting] = useState(false);
 
-  // Filter categories by type to ensure income and expense categories are different
   const filteredCategories = categories.filter(cat => cat.type === type);
 
-  // Auto-reset when modal closes/opens
   useEffect(() => {
     if (isOpen) {
       setAmount('');
@@ -49,39 +48,19 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
     }
   }, [isOpen]);
 
-  const handleSmartSuggest = async () => {
-    if (!description.trim()) return;
-    setIsSuggesting(true);
-    try {
-      const result = await suggestTransactionCategory({ 
-        description, 
-        availableCategories: filteredCategories.map(c => c.name) 
-      });
-      
-      // Try to find a match in existing categories
-      const match = filteredCategories.find(c => 
-        c.name.toLowerCase() === result.category.toLowerCase()
-      );
-
-      if (match) {
-        setSelectedCategory(match.name);
-        setSelectedEmoticon(match.emoticon);
-      } else {
-        // If it's a new suggested category, we'll use it but fallback to 'Other' emoticon if needed
-        // For simplicity in this UI, we set it if it exists or use first match
-        setSelectedCategory(result.category);
-        setSelectedEmoticon(result.emoticon);
-      }
-    } catch (error) {
-      console.error("Smart suggest failed", error);
-    } finally {
-      setIsSuggesting(false);
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || !selectedCategory) return;
+    
+    if (!amount) return;
+    
+    if (!selectedCategory) {
+      toast({
+        variant: "destructive",
+        title: t.error,
+        description: t.categoryRequired,
+      });
+      return;
+    }
     
     onAdd({
       amount: parseFloat(amount),
@@ -106,26 +85,13 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
           <div className="grid grid-cols-1 gap-6">
             <div className="space-y-2">
               <Label htmlFor="description" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t.description}</Label>
-              <div className="relative">
-                <Input 
-                  id="description" 
-                  value={description} 
-                  onChange={(e) => setDescription(e.target.value)} 
-                  className="pr-12 h-14 rounded-2xl bg-muted/30 border-none shadow-inner font-medium transition-all focus:bg-white focus:shadow-md"
-                  placeholder="e.g. Starbucks Coffee"
-                />
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="ghost"
-                  disabled={isSuggesting || !description.trim()}
-                  onClick={handleSmartSuggest}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:bg-primary/10 rounded-xl h-10 w-10"
-                >
-                  {isSuggesting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
-                </Button>
-              </div>
-              {isSuggesting && <p className="text-[10px] text-primary animate-pulse font-bold uppercase tracking-wider">{t.aiThinking}</p>}
+              <Input 
+                id="description" 
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)} 
+                className="h-14 rounded-2xl bg-muted/30 border-none shadow-inner font-medium transition-all focus:bg-white focus:shadow-md"
+                placeholder="e.g. Starbucks Coffee"
+              />
             </div>
 
             <div className="space-y-2">

@@ -1,4 +1,3 @@
-import { config } from 'dotenv';
-config();
 
-import '@/ai/flows/transaction-category-suggestion.ts';
+// AI modules removed
+export {};
