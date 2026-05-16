@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState } from 'react';
@@ -192,7 +193,7 @@ export default function Home() {
                   <div>
                     <h4 className="font-bold text-base leading-tight mb-1">{tx.category}</h4>
                     <div className="flex items-center gap-3 text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
-                      <span>{format(new Date(tx.date), 'MMM dd, HH:mm')}</span>
+                      <span>{format(new Date(tx.date), 'MMM dd, hh:mm a')}</span>
                     </div>
                   </div>
                 </div>

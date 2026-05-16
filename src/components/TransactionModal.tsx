@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState, useEffect } from 'react';
@@ -6,9 +7,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { Category, Transaction } from '@/hooks/use-kanakku';
 import { translations, type Language } from '@/lib/translations';
-import { Plus } from 'lucide-react';
+import { Plus, CalendarIcon } from 'lucide-react';
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface TransactionModalProps {
   isOpen: boolean;
@@ -25,6 +30,7 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
   const [amount, setAmount] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedEmoticon, setSelectedEmoticon] = useState('');
+  const [date, setDate] = useState<Date>(new Date());
 
   // Filter categories by type to ensure income and expense categories are different
   const filteredCategories = categories.filter(cat => cat.type === type);
@@ -35,6 +41,7 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
       setAmount('');
       setSelectedCategory('');
       setSelectedEmoticon('');
+      setDate(new Date());
     }
   }, [isOpen]);
 
@@ -47,7 +54,7 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
       category: selectedCategory,
       emoticon: selectedEmoticon || '💰',
       type,
-      date: new Date().toISOString()
+      date: date.toISOString()
     });
     onClose();
   };
@@ -76,6 +83,33 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
                 />
               </div>
             </div>
+
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t.date}</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full h-14 rounded-2xl bg-muted/30 border-none shadow-inner text-left font-normal justify-start px-4 transition-all focus:bg-white focus:shadow-md",
+                      !date && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
+                    {date ? format(date, "PPP") : <span>{t.date}</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 rounded-2xl shadow-xl border-none overflow-hidden" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={(d) => d && setDate(d)}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="category" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t.category}</Label>
               <Select value={selectedCategory} onValueChange={(val) => {
