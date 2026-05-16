@@ -25,6 +25,9 @@ export const translations = {
     settings: 'Settings',
     changeLanguage: 'Change Language',
     aiSuggesting: 'AI is thinking...',
+    manageCategories: 'Manage Categories',
+    incomeCategories: 'Income Categories',
+    expenseCategories: 'Expense Categories',
   },
   ta: {
     welcome: 'கணக்கு ஃப்ளோவிற்கு வரவேற்கிறோம்',
@@ -50,6 +53,9 @@ export const translations = {
     settings: 'அமைப்புகள்',
     changeLanguage: 'மொழியை மாற்றவும்',
     aiSuggesting: 'AI யோசிக்கிறது...',
+    manageCategories: 'வகைகளை நிர்வகி',
+    incomeCategories: 'வரவு வகைகள்',
+    expenseCategories: 'செலவு வகைகள்',
   },
   ml: {
     welcome: 'കണക്ക് ഫ്ലോയിലേക്ക് സ്വാഗതം',
@@ -75,5 +81,8 @@ export const translations = {
     settings: 'ക്രമീകരണങ്ങൾ',
     changeLanguage: 'ഭാഷ മാറ്റുക',
     aiSuggesting: 'AI ചിന്തിക്കുന്നു...',
+    manageCategories: 'വിഭാഗങ്ങൾ നിയന്ത്രിക്കുക',
+    incomeCategories: 'വരവ് വിഭാഗങ്ങൾ',
+    expenseCategories: 'ചെലവ് വിഭാഗങ്ങൾ',
   }
 };

@@ -5,6 +5,7 @@ export interface Category {
   id: string;
   name: string;
   emoticon: string;
+  type: 'income' | 'expense';
 }
 
 export interface Transaction {
@@ -18,11 +19,14 @@ export interface Transaction {
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
-  { id: '1', name: 'Food', emoticon: '🍔' },
-  { id: '2', name: 'Rent', emoticon: '🏠' },
-  { id: '3', name: 'Transport', emoticon: '🚗' },
-  { id: '4', name: 'Salary', emoticon: '💰' },
-  { id: '5', name: 'Utilities', emoticon: '💡' },
+  { id: '1', name: 'Food', emoticon: '🍔', type: 'expense' },
+  { id: '2', name: 'Rent', emoticon: '🏠', type: 'expense' },
+  { id: '3', name: 'Transport', emoticon: '🚗', type: 'expense' },
+  { id: '4', name: 'Utilities', emoticon: '💡', type: 'expense' },
+  { id: '5', name: 'Entertainment', emoticon: '🎭', type: 'expense' },
+  { id: '6', name: 'Salary', emoticon: '💰', type: 'income' },
+  { id: '7', name: 'Bonus', emoticon: '🎁', type: 'income' },
+  { id: '8', name: 'Investment', emoticon: '📈', type: 'income' },
 ];
 
 export function useKanakku() {
