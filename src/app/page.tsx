@@ -49,6 +49,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'income' | 'expense'>('expense');
   const [isStudioOpen, setIsStudioOpen] = useState(false);
+  const [studioMode, setStudioMode] = useState<'income' | 'expense' | 'all'>('all');
 
   if (!isHydrated) return null;
   if (!lang) return <LanguageSelector onSelect={setLang} />;
@@ -62,6 +63,11 @@ export default function Home() {
   const totalExpense = transactions
     .filter(tx => tx.type === 'expense')
     .reduce((acc, tx) => acc + tx.amount, 0);
+
+  const openStudio = (mode: 'income' | 'expense' | 'all') => {
+    setStudioMode(mode);
+    setIsStudioOpen(true);
+  };
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 pb-24 md:pb-8 min-h-screen">
@@ -86,7 +92,7 @@ export default function Home() {
           <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2 border-none shadow-xl">
             <DropdownMenuLabel className="px-3 pt-3 pb-1 text-xs uppercase text-muted-foreground font-bold tracking-widest">{t.settings}</DropdownMenuLabel>
             <DropdownMenuSeparator className="mx-2 my-2" />
-            <DropdownMenuItem onClick={() => setIsStudioOpen(true)} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
+            <DropdownMenuItem onClick={() => openStudio('all')} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
               <Tag className="w-4 h-4" />
               <span className="font-semibold">{t.categoryStudio}</span>
             </DropdownMenuItem>
@@ -224,7 +230,7 @@ export default function Home() {
         categories={categories}
         lang={lang}
         onAdd={addTransaction}
-        onManageCategories={() => setIsStudioOpen(true)}
+        onManageCategories={() => openStudio(modalType)}
       />
       <CategoryStudio 
         isOpen={isStudioOpen} 
@@ -233,6 +239,7 @@ export default function Home() {
         lang={lang}
         onAdd={addCategory}
         onRemove={removeCategory}
+        mode={studioMode}
       />
     </div>
   );

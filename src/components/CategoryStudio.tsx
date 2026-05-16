@@ -1,6 +1,7 @@
+
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,15 +18,24 @@ interface CategoryStudioProps {
   lang: Language;
   onAdd: (cat: Omit<Category, 'id'>) => void;
   onRemove: (id: string) => void;
+  mode?: 'income' | 'expense' | 'all';
 }
 
 const COMMON_EMOJIS = ['🍔', '🛒', '🏠', '🚗', '💡', '🛍️', '🏥', '📦', '💰', '👨‍💻', '📈', '🎁', '🧧', '💵', '🍕', '💻', '🍿'];
 
-export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRemove }: CategoryStudioProps) {
+export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRemove, mode = 'all' }: CategoryStudioProps) {
   const t = translations[lang];
   const [newName, setNewName] = useState('');
   const [newEmoji, setNewEmoji] = useState('📦');
   const [activeTab, setActiveTab] = useState<'income' | 'expense'>('expense');
+
+  // Sync activeTab with forced mode when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      if (mode === 'income') setActiveTab('income');
+      else if (mode === 'expense') setActiveTab('expense');
+    }
+  }, [isOpen, mode]);
 
   const handleAdd = () => {
     if (!newName.trim()) return;
@@ -54,14 +64,16 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
           onValueChange={(v) => setActiveTab(v as any)} 
           className="w-full flex-1 flex flex-col px-8 overflow-hidden min-h-0"
         >
-          <TabsList className="grid grid-cols-2 mb-6 rounded-xl bg-muted/50 p-1 shrink-0">
-            <TabsTrigger value="expense" className="rounded-lg gap-2 data-[state=active]:bg-white data-[state=active]:text-expense">
-              <TrendingDown className="w-4 h-4" /> {t.expense}
-            </TabsTrigger>
-            <TabsTrigger value="income" className="rounded-lg gap-2 data-[state=active]:bg-white data-[state=active]:text-income">
-              <TrendingUp className="w-4 h-4" /> {t.income}
-            </TabsTrigger>
-          </TabsList>
+          {mode === 'all' && (
+            <TabsList className="grid grid-cols-2 mb-6 rounded-xl bg-muted/50 p-1 shrink-0">
+              <TabsTrigger value="expense" className="rounded-lg gap-2 data-[state=active]:bg-white data-[state=active]:text-expense">
+                <TrendingDown className="w-4 h-4" /> {t.expense}
+              </TabsTrigger>
+              <TabsTrigger value="income" className="rounded-lg gap-2 data-[state=active]:bg-white data-[state=active]:text-income">
+                <TrendingUp className="w-4 h-4" /> {t.income}
+              </TabsTrigger>
+            </TabsList>
+          )}
 
           <div className="flex-1 overflow-y-auto space-y-6 pb-6 pr-2 custom-scrollbar min-h-0">
             {/* Input Form */}
