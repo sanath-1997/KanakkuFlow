@@ -26,6 +26,7 @@ export const translations = {
     manageCategories: 'Manage Categories',
     incomeCategories: 'Income Categories',
     expenseCategories: 'Expense Categories',
+    done: 'Done',
   },
   ta: {
     welcome: 'கணக்கு ஃப்ளோவிற்கு வரவேற்கிறோம்',
@@ -52,6 +53,7 @@ export const translations = {
     manageCategories: 'வகைகளை நிர்வகி',
     incomeCategories: 'வரவு வகைகள்',
     expenseCategories: 'செலவு வகைகள்',
+    done: 'முடிந்தது',
   },
   ml: {
     welcome: 'കണക്ക് ഫ്ലോയിലേക്ക് സ്വാഗതം',
@@ -78,5 +80,6 @@ export const translations = {
     manageCategories: 'വിഭാഗങ്ങൾ നിയന്ത്രിക്കുക',
     incomeCategories: 'വരവ് വിഭാഗങ്ങൾ',
     expenseCategories: 'ചെലവ് വിഭാഗങ്ങൾ',
+    done: 'പൂർത്തിയായി',
   }
 };
