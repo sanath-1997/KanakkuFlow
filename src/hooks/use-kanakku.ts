@@ -44,6 +44,7 @@ export function useKanakku() {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
+    // Initial load from LocalStorage
     const storedLang = localStorage.getItem('kanakku-lang') as Language;
     const storedTransactions = localStorage.getItem('kanakku-txs');
     const storedCategories = localStorage.getItem('kanakku-cats');
@@ -78,6 +79,7 @@ export function useKanakku() {
   }, []);
 
   useEffect(() => {
+    // Save to LocalStorage whenever state changes
     if (isHydrated) {
       if (lang) localStorage.setItem('kanakku-lang', lang);
       localStorage.setItem('kanakku-txs', JSON.stringify(transactions));
