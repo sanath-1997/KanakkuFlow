@@ -6,20 +6,21 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
 
 - **Multi-language Support**: Seamlessly switch between English, தமிழ், and മലയാളം.
 - **Local Persistence**: Your data stays on your device using LocalStorage.
-- **Budgeting**: Set monthly spending limits and track progress visually.
-- **Category Studio**: Create and manage custom income and expense categories.
+- **Budgeting**: Set monthly spending limits and track progress visually with a dashboard progress bar.
+- **Category Studio**: Create and manage custom income and expense categories with emoticon support.
 - **Data Export**: Export your transactions to CSV format for external analysis.
 - **Filtering**: View transactions for specific dates using a built-in calendar filter.
 - **Currency Support**: Switch between multiple currency symbols (₹, $, €, £, ¥).
+- **Smart Categorization**: (Experimental) Genkit-powered suggestions for categories based on descriptions.
 
 ## Tech Stack
 
-- **Framework**: Next.js 15
+- **Framework**: Next.js 15 (App Router)
 - **Styling**: Tailwind CSS
 - **Components**: ShadCN UI
 - **Icons**: Lucide React
 - **Charts**: Recharts
-- **State Management**: Custom React Hooks
+- **AI/GenAI**: Genkit (Google Gemini)
 
 ## Getting Started
 
@@ -27,6 +28,7 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
 
 - Node.js 18+ 
 - npm or yarn
+- A Google Gemini API Key (for GenAI features)
 
 ### Installation
 
@@ -40,30 +42,38 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
    npm install
    ```
 
-3. Run the development server:
+3. Create a `.env` file in the root and add your API key:
+   ```env
+   GOOGLE_GENAI_API_KEY=your_api_key_here
+   ```
+
+4. Run the development server:
    ```bash
    npm run dev
    ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## How to move to GitHub
+## Deployment to Vercel
 
-If you are using Firebase Studio and want to push this to your own GitHub:
+1. **Push to GitHub**:
+   - Create a new repository on GitHub.
+   - Run the following in your terminal:
+     ```bash
+     git init
+     git add .
+     git commit -m "Initial commit"
+     git branch -M main
+     git remote add origin <your-repo-url>
+     git push -u origin main
+     ```
 
-1. Create a new repository on [GitHub](https://github.com/new).
-2. Initialize git locally (if not already):
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   ```
-3. Add the remote and push:
-   ```bash
-   git remote add origin <your-repo-url>
-   git branch -M main
-   git push -u origin main
-   ```
+2. **Deploy on Vercel**:
+   - Go to [Vercel](https://vercel.com) and click **"New Project"**.
+   - Import your GitHub repository.
+   - In the **Environment Variables** section, add:
+     - `GOOGLE_GENAI_API_KEY`: Your Gemini API key.
+   - Click **Deploy**.
 
 ## License
 
