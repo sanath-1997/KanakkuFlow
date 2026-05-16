@@ -31,6 +31,11 @@ export const translations = {
     allTransactions: 'All Transactions',
     noTransactionsOnDate: 'No transactions on this date.',
     clearFilter: 'Clear Filter',
+    exportData: 'Export Data (CSV)',
+    clearAllData: 'Clear All Data',
+    confirmClear: 'Are you absolutely sure?',
+    clearWarning: 'This will permanently delete all your transactions and custom categories. This action cannot be undone.',
+    delete: 'Delete Everything',
   },
   ta: {
     welcome: 'கணக்கு ஃப்ளோவிற்கு வரவேற்கிறோம்',
@@ -62,6 +67,11 @@ export const translations = {
     allTransactions: 'அனைத்து பரிவர்த்தனைகள்',
     noTransactionsOnDate: 'இந்த தேதியில் பரிவர்த்தனைகள் இல்லை.',
     clearFilter: 'வடிகட்டியை அகற்று',
+    exportData: 'தரவை ஏற்றுமதி செய் (CSV)',
+    clearAllData: 'அனைத்து தரவையும் அழி',
+    confirmClear: 'நிச்சயமாக அழிக்க வேண்டுமா?',
+    clearWarning: 'இது உங்கள் அனைத்து பரிவர்த்தனைகளையும் வகைகளையும் நிரந்தரமாக நீக்கும். இதை மாற்ற முடியாது.',
+    delete: 'அனைத்தையும் நீக்கு',
   },
   ml: {
     welcome: 'കണക്ക് ഫ്ലോയിലേക്ക് സ്വാഗതം',
@@ -93,5 +103,10 @@ export const translations = {
     allTransactions: 'എല്ലാ ഇടപാടുകളും',
     noTransactionsOnDate: 'ഈ തീയതിയിൽ ഇടപാടുകളൊന്നുമില്ല.',
     clearFilter: 'ഫിൽട്ടർ ഒഴിവാക്കുക',
+    exportData: 'ഡാറ്റ എക്സ്പോർട്ട് ചെയ്യുക (CSV)',
+    clearAllData: 'എല്ലാ ഡാറ്റയും മായ്ക്കുക',
+    confirmClear: 'നിങ്ങൾക്ക് ഉറപ്പാണോ?',
+    clearWarning: 'ഇത് നിങ്ങളുടെ എല്ലാ ഇടപാടുകളും വിഭാഗങ്ങളും ശാശ്വതമായി ഇല്ലാതാക്കും. ഈ പ്രവർത്തനം മാറ്റാൻ കഴിയില്ല.',
+    delete: 'എല്ലാം ഇല്ലാതാക്കുക',
   }
 };

@@ -110,6 +110,13 @@ export function useKanakku() {
     setCategories(prev => prev.filter(c => c.id !== id));
   };
 
+  const clearAllData = () => {
+    setTransactions([]);
+    setCategories(DEFAULT_CATEGORIES);
+    localStorage.removeItem('kanakku-txs');
+    localStorage.removeItem('kanakku-cats');
+  };
+
   const balance = transactions.reduce((acc, tx) => {
     return tx.type === 'income' ? acc + tx.amount : acc - tx.amount;
   }, 0);
@@ -123,6 +130,7 @@ export function useKanakku() {
     categories,
     addCategory,
     removeCategory,
+    clearAllData,
     balance,
     isHydrated
   };

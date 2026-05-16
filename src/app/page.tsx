@@ -22,7 +22,9 @@ import {
   Trash2,
   Tag,
   Calendar as CalendarIcon,
-  X
+  X,
+  Download,
+  AlertTriangle
 } from 'lucide-react';
 import { format, isSameDay } from 'date-fns';
 import {
@@ -39,6 +41,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function Home() {
   const { 
@@ -50,6 +62,7 @@ export default function Home() {
     categories, 
     addCategory, 
     removeCategory, 
+    clearAllData,
     balance,
     isHydrated
   } = useKanakku();
@@ -59,6 +72,7 @@ export default function Home() {
   const [isStudioOpen, setIsStudioOpen] = useState(false);
   const [studioMode, setStudioMode] = useState<'income' | 'expense' | 'all'>('all');
   const [filterDate, setFilterDate] = useState<Date | undefined>(undefined);
+  const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
 
   if (!isHydrated) return null;
   if (!lang) return <LanguageSelector onSelect={setLang} />;
@@ -76,6 +90,33 @@ export default function Home() {
   const openStudio = (mode: 'income' | 'expense' | 'all') => {
     setStudioMode(mode);
     setIsStudioOpen(true);
+  };
+
+  const handleExport = () => {
+    if (transactions.length === 0) return;
+    
+    const headers = ['Date', 'Type', 'Category', 'Amount', 'Emoticon'];
+    const csvRows = [
+      headers.join(','),
+      ...transactions.map(tx => [
+        format(new Date(tx.date), 'yyyy-MM-dd HH:mm:ss'),
+        tx.type,
+        tx.category,
+        tx.amount,
+        tx.emoticon
+      ].join(','))
+    ];
+    
+    const csvString = csvRows.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `kanakku_flow_export_${format(new Date(), 'yyyy-MM-dd')}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const filteredTransactions = filterDate 
@@ -103,12 +144,19 @@ export default function Home() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="rounded-2xl w-56 p-2 border-none shadow-xl">
-            <DropdownMenuLabel className="px-3 pt-3 pb-1 text-xs uppercase text-muted-foreground font-bold tracking-widest">{t.settings}</DropdownMenuLabel>
+            <DropdownMenuLabel className="px-3 pt-3 pb-1 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{t.settings}</DropdownMenuLabel>
             <DropdownMenuSeparator className="mx-2 my-2" />
+            
             <DropdownMenuItem onClick={() => openStudio('all')} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
               <Tag className="w-4 h-4" />
               <span className="font-semibold">{t.categoryStudio}</span>
             </DropdownMenuItem>
+            
+            <DropdownMenuItem onClick={handleExport} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
+              <Download className="w-4 h-4" />
+              <span className="font-semibold">{t.exportData}</span>
+            </DropdownMenuItem>
+
             <DropdownMenuSeparator className="mx-2 my-2" />
             <DropdownMenuLabel className="px-3 pt-3 pb-1 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{t.changeLanguage}</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => setLang('en')} className="gap-2 p-3 rounded-xl focus:bg-primary/5 transition-colors cursor-pointer">
@@ -119,6 +167,12 @@ export default function Home() {
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setLang('ml')} className="gap-2 p-3 rounded-xl focus:bg-primary/5 transition-colors cursor-pointer">
               <Globe className="w-4 h-4 opacity-50" /> മലയാളം
+            </DropdownMenuItem>
+            
+            <DropdownMenuSeparator className="mx-2 my-2" />
+            <DropdownMenuItem onClick={() => setIsClearAlertOpen(true)} className="gap-2 p-3 rounded-xl focus:bg-destructive/10 text-destructive transition-colors cursor-pointer">
+              <AlertTriangle className="w-4 h-4" />
+              <span className="font-semibold">{t.clearAllData}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -314,6 +368,32 @@ export default function Home() {
         onRemove={removeCategory}
         mode={studioMode}
       />
+
+      {/* Clear Data Alert */}
+      <AlertDialog open={isClearAlertOpen} onOpenChange={setIsClearAlertOpen}>
+        <AlertDialogContent className="rounded-[2rem] border-none shadow-2xl p-8">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl font-headline font-bold text-destructive flex items-center gap-3">
+              <AlertTriangle className="w-6 h-6" /> {t.confirmClear}
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-base text-muted-foreground py-2">
+              {t.clearWarning}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-4 pt-4">
+            <AlertDialogCancel className="h-12 rounded-xl font-bold flex-1 border-none bg-muted/50">{t.cancel}</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={() => {
+                clearAllData();
+                setIsClearAlertOpen(false);
+              }}
+              className="h-12 rounded-xl font-bold flex-1 bg-destructive hover:bg-destructive/90 text-white shadow-lg shadow-destructive/20 border-none"
+            >
+              {t.delete}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
