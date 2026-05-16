@@ -2,12 +2,12 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { translations, type Language } from '@/lib/translations';
-import { Trash2, Tag, TrendingUp, TrendingDown, Plus, Check } from 'lucide-react';
+import { Tag, TrendingUp, TrendingDown, Plus, Trash2 } from 'lucide-react';
 import type { Category } from '@/hooks/use-kanakku';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -75,7 +75,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
             </TabsList>
           )}
 
-          <div className="flex-1 overflow-y-auto space-y-6 pb-6 pr-2 custom-scrollbar min-h-0">
+          <div className="flex-1 overflow-y-auto space-y-6 pb-8 pr-2 custom-scrollbar min-h-0">
             {/* Input Form */}
             <div className="bg-muted/30 p-5 rounded-2xl space-y-4 border border-border/50 shrink-0">
               <div className="space-y-2">
@@ -140,12 +140,6 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
             </div>
           </div>
         </Tabs>
-
-        <DialogFooter className="p-8 pt-4 border-t bg-muted/10 shrink-0">
-          <Button variant="secondary" onClick={onClose} className="w-full h-14 rounded-2xl font-headline text-lg gap-2">
-            <Check className="w-5 h-5" /> {t.done}
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
