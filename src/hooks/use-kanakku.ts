@@ -49,6 +49,7 @@ export function useKanakku() {
     const storedCategories = localStorage.getItem('kanakku-cats');
 
     if (storedLang) setLang(storedLang);
+    
     if (storedTransactions) {
       try {
         setTransactions(JSON.parse(storedTransactions));

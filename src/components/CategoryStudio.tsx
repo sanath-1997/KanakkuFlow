@@ -1,12 +1,12 @@
 "use client"
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { translations, type Language } from '@/lib/translations';
-import { Plus, Trash2, Tag, TrendingUp, TrendingDown } from 'lucide-react';
+import { Plus, Trash2, Tag, TrendingUp, TrendingDown, Save, Check } from 'lucide-react';
 import type { Category } from '@/hooks/use-kanakku';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -28,8 +28,8 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
   const [activeTab, setActiveTab] = useState<'income' | 'expense'>('expense');
 
   const handleAdd = () => {
-    if (!newName) return;
-    onAdd({ name: newName, emoticon: newEmoji, type: activeTab });
+    if (!newName.trim()) return;
+    onAdd({ name: newName.trim(), emoticon: newEmoji, type: activeTab });
     setNewName('');
     setNewEmoji('📦');
   };
@@ -38,14 +38,14 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] rounded-[2rem] max-h-[90vh] flex flex-col overflow-hidden">
-        <DialogHeader className="px-6 pt-6">
+      <DialogContent className="sm:max-w-[425px] rounded-[2rem] max-h-[90vh] flex flex-col overflow-hidden p-0 gap-0">
+        <DialogHeader className="px-8 pt-8 pb-4">
           <DialogTitle className="text-2xl font-headline flex items-center gap-2">
             <Tag className="w-6 h-6 text-primary" /> {t.categoryStudio}
           </DialogTitle>
         </DialogHeader>
         
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full flex-1 flex flex-col px-6">
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full flex-1 flex flex-col px-8">
           <TabsList className="grid grid-cols-2 mb-6 rounded-xl bg-muted/50 p-1">
             <TabsTrigger value="expense" className="rounded-lg gap-2 data-[state=active]:bg-white data-[state=active]:text-expense">
               <TrendingDown className="w-4 h-4" /> {t.expense}
@@ -56,7 +56,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
           </TabsList>
 
           <div className="flex-1 overflow-y-auto space-y-6 pb-6 pr-1 custom-scrollbar">
-            <div className="bg-muted/30 p-4 rounded-2xl space-y-4">
+            <div className="bg-muted/30 p-5 rounded-2xl space-y-4 border border-border/50">
               <div className="space-y-2">
                 <Label className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">{t.categoryName}</Label>
                 <Input 
@@ -64,6 +64,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
                   onChange={(e) => setNewName(e.target.value)} 
                   placeholder={t.categoryName}
                   className="rounded-xl bg-white border-none shadow-sm h-12"
+                  onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
                 />
               </div>
               <div className="space-y-2">
@@ -81,8 +82,8 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
                   ))}
                 </div>
               </div>
-              <Button onClick={handleAdd} className="w-full rounded-xl h-12 gap-2 font-headline text-base">
-                <Plus className="w-4 h-4" /> {t.addCategory}
+              <Button onClick={handleAdd} className="w-full rounded-xl h-14 gap-2 font-headline text-base shadow-lg active:scale-95 transition-all">
+                <Save className="w-5 h-5" /> {t.addCategory}
               </Button>
             </div>
 
@@ -92,7 +93,9 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
               </Label>
               <div className="space-y-2">
                 {filteredCategories.length === 0 ? (
-                  <p className="text-center py-8 text-sm text-muted-foreground italic">No categories yet</p>
+                  <div className="bg-white/50 border-2 border-dashed rounded-2xl py-8 text-center">
+                    <p className="text-sm text-muted-foreground italic">No categories yet</p>
+                  </div>
                 ) : (
                   filteredCategories.map(cat => (
                     <div key={cat.id} className="flex items-center justify-between p-4 bg-white border border-border/50 rounded-2xl shadow-sm group hover:border-primary/20 transition-all">
@@ -104,7 +107,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
                         variant="ghost" 
                         size="icon" 
                         onClick={() => onRemove(cat.id)}
-                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl h-10 w-10 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl h-10 w-10 md:opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -115,6 +118,12 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
             </div>
           </div>
         </Tabs>
+
+        <DialogFooter className="p-8 pt-4 border-t bg-muted/10">
+          <Button variant="secondary" onClick={onClose} className="w-full h-14 rounded-2xl font-headline text-lg gap-2">
+            <Check className="w-5 h-5" /> Done
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
