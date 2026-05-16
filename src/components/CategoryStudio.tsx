@@ -52,7 +52,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[450px] rounded-[2rem] h-[90vh] flex flex-col overflow-hidden p-0 gap-0 border-none shadow-2xl">
+      <DialogContent className="sm:max-w-[450px] rounded-[2rem] h-[85vh] max-h-[700px] flex flex-col overflow-hidden p-0 gap-0 border-none shadow-2xl">
         <DialogHeader className="px-8 pt-8 pb-4 shrink-0">
           <DialogTitle className="text-2xl font-headline flex items-center gap-2">
             <Tag className="w-6 h-6 text-primary" /> {t.categoryStudio}

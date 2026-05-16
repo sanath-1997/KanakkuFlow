@@ -143,25 +143,38 @@ export default function Home() {
       </Card>
 
       {/* Action Buttons */}
-      <div className="grid grid-cols-2 gap-6 mb-10">
+      <div className="grid grid-cols-2 gap-6 mb-10 items-start">
         <Button 
           onClick={() => { setModalType('income'); setIsModalOpen(true); }}
-          className="bg-income hover:bg-income/90 text-white rounded-3xl h-20 text-xl font-headline font-bold shadow-xl shadow-income/20 gap-4 transition-all active:scale-95 border-none"
+          className="bg-income hover:bg-income/90 text-white rounded-3xl h-20 text-xl font-headline font-bold shadow-xl shadow-income/20 gap-4 transition-all active:scale-95 border-none w-full"
         >
           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
             <Plus className="w-6 h-6" />
           </div>
           {t.income}
         </Button>
-        <Button 
-          onClick={() => { setModalType('expense'); setIsModalOpen(true); }}
-          className="bg-expense hover:bg-expense/90 text-white rounded-3xl h-20 text-xl font-headline font-bold shadow-xl shadow-expense/20 gap-4 transition-all active:scale-95 border-none"
-        >
-          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-            <Minus className="w-6 h-6" />
-          </div>
-          {t.expense}
-        </Button>
+        <div className="flex flex-col gap-3">
+          <Button 
+            onClick={() => { setModalType('expense'); setIsModalOpen(true); }}
+            className="bg-expense hover:bg-expense/90 text-white rounded-3xl h-20 text-xl font-headline font-bold shadow-xl shadow-expense/20 gap-4 transition-all active:scale-95 border-none w-full"
+          >
+            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+              <Minus className="w-6 h-6" />
+            </div>
+            {t.expense}
+          </Button>
+          <Button 
+            variant="ghost"
+            size="sm"
+            onClick={() => openStudio('all')}
+            className="self-center flex items-center gap-2 h-8 text-muted-foreground hover:text-primary transition-all group"
+          >
+            <div className="w-6 h-6 rounded-lg bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+              <Tag className="w-3.5 h-3.5" />
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-widest">{t.manageCategories}</span>
+          </Button>
+        </div>
       </div>
 
       {/* Spending Chart Section */}
