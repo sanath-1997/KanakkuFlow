@@ -153,7 +153,7 @@ export default function Home() {
           </div>
           {t.income}
         </Button>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-5">
           <Button 
             onClick={() => { setModalType('expense'); setIsModalOpen(true); }}
             className="bg-expense hover:bg-expense/90 text-white rounded-3xl h-20 text-xl font-headline font-bold shadow-xl shadow-expense/20 gap-4 transition-all active:scale-95 border-none w-full"
@@ -164,15 +164,15 @@ export default function Home() {
             {t.expense}
           </Button>
           <Button 
-            variant="ghost"
-            size="sm"
+            variant="outline"
+            size="default"
             onClick={() => openStudio('all')}
-            className="self-center flex items-center gap-2 h-8 text-muted-foreground hover:text-primary transition-all group"
+            className="self-center flex items-center gap-3 h-12 px-6 rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/5 hover:border-primary/30 transition-all group border-2 border-border/60 bg-white shadow-sm"
           >
-            <div className="w-6 h-6 rounded-lg bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-              <Tag className="w-3.5 h-3.5" />
+            <div className="w-8 h-8 rounded-xl bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+              <Tag className="w-4 h-4" />
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">{t.manageCategories}</span>
+            <span className="text-xs font-bold uppercase tracking-widest">{t.manageCategories}</span>
           </Button>
         </div>
       </div>
