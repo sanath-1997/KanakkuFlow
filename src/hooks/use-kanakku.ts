@@ -26,23 +26,15 @@ const DEFAULT_CATEGORIES: Category[] = [
   { id: 'e5', name: 'Utilities', emoticon: '💡', type: 'expense' },
   { id: 'e6', name: 'Shopping', emoticon: '🛍️', type: 'expense' },
   { id: 'e7', name: 'Health', emoticon: '🏥', type: 'expense' },
-  { id: 'e8', name: 'Dining Out', emoticon: '🍕', type: 'expense' },
-  { id: 'e9', name: 'Entertainment', emoticon: '🎭', type: 'expense' },
-  { id: 'e10', name: 'Education', emoticon: '🎓', type: 'expense' },
-  { id: 'e11', name: 'Travel', emoticon: '✈️', type: 'expense' },
-  { id: 'e12', name: 'Subscriptions', emoticon: '💻', type: 'expense' },
-  { id: 'e13', name: 'Maintenance', emoticon: '🔧', type: 'expense' },
-  { id: 'e14', name: 'Other', emoticon: '📦', type: 'expense' },
+  { id: 'e8', name: 'Other', emoticon: '📦', type: 'expense' },
   
   // Common Income
   { id: 'i1', name: 'Salary', emoticon: '💰', type: 'income' },
   { id: 'i2', name: 'Freelance', emoticon: '👨‍💻', type: 'income' },
-  { id: 'i3', name: 'Bonus', emoticon: '🎁', type: 'income' },
-  { id: 'i4', name: 'Investment', emoticon: '📈', type: 'income' },
+  { id: 'i3', name: 'Investments', emoticon: '📈', type: 'income' },
+  { id: 'i4', name: 'Bonus', emoticon: '🎁', type: 'income' },
   { id: 'i5', name: 'Gift', emoticon: '🧧', type: 'income' },
-  { id: 'i6', name: 'Interest', emoticon: '🏦', type: 'income' },
-  { id: 'i7', name: 'Business', emoticon: '🏢', type: 'income' },
-  { id: 'i8', name: 'Other', emoticon: '💵', type: 'income' },
+  { id: 'i6', name: 'Other', emoticon: '💵', type: 'income' },
 ];
 
 export function useKanakku() {
