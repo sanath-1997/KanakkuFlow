@@ -41,6 +41,8 @@ export function useKanakku() {
   const [lang, setLang] = useState<Language | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
+  const [budget, setBudget] = useState<number>(0);
+  const [currency, setCurrency] = useState<string>('₹');
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -48,8 +50,12 @@ export function useKanakku() {
     const storedLang = localStorage.getItem('kanakku-lang') as Language;
     const storedTransactions = localStorage.getItem('kanakku-txs');
     const storedCategories = localStorage.getItem('kanakku-cats');
+    const storedBudget = localStorage.getItem('kanakku-budget');
+    const storedCurrency = localStorage.getItem('kanakku-currency');
 
     if (storedLang) setLang(storedLang);
+    if (storedBudget) setBudget(parseFloat(storedBudget));
+    if (storedCurrency) setCurrency(storedCurrency);
     
     if (storedTransactions) {
       try {
@@ -84,8 +90,10 @@ export function useKanakku() {
       if (lang) localStorage.setItem('kanakku-lang', lang);
       localStorage.setItem('kanakku-txs', JSON.stringify(transactions));
       localStorage.setItem('kanakku-cats', JSON.stringify(categories));
+      localStorage.setItem('kanakku-budget', budget.toString());
+      localStorage.setItem('kanakku-currency', currency);
     }
-  }, [lang, transactions, categories, isHydrated]);
+  }, [lang, transactions, categories, budget, currency, isHydrated]);
 
   const addTransaction = (tx: Omit<Transaction, 'id'>) => {
     const newId = Math.random().toString(36).substring(2, 11);
@@ -113,8 +121,10 @@ export function useKanakku() {
   const clearAllData = () => {
     setTransactions([]);
     setCategories(DEFAULT_CATEGORIES);
+    setBudget(0);
     localStorage.removeItem('kanakku-txs');
     localStorage.removeItem('kanakku-cats');
+    localStorage.removeItem('kanakku-budget');
   };
 
   const balance = transactions.reduce((acc, tx) => {
@@ -132,6 +142,10 @@ export function useKanakku() {
     removeCategory,
     clearAllData,
     balance,
+    budget,
+    setBudget,
+    currency,
+    setCurrency,
     isHydrated
   };
 }

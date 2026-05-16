@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState } from 'react';
@@ -10,6 +9,9 @@ import { TransactionModal } from '@/components/TransactionModal';
 import { CategoryStudio } from '@/components/CategoryStudio';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { 
   Plus, 
   Minus, 
@@ -24,9 +26,11 @@ import {
   Calendar as CalendarIcon,
   X,
   Download,
-  AlertTriangle
+  AlertTriangle,
+  Target,
+  Coins
 } from 'lucide-react';
-import { format, isSameDay } from 'date-fns';
+import { format, isSameDay, startOfMonth, endOfMonth } from 'date-fns';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +38,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import {
   Popover,
@@ -51,6 +58,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export default function Home() {
   const { 
@@ -64,6 +78,10 @@ export default function Home() {
     removeCategory, 
     clearAllData,
     balance,
+    budget,
+    setBudget,
+    currency,
+    setCurrency,
     isHydrated
   } = useKanakku();
 
@@ -73,6 +91,8 @@ export default function Home() {
   const [studioMode, setStudioMode] = useState<'income' | 'expense' | 'all'>('all');
   const [filterDate, setFilterDate] = useState<Date | undefined>(undefined);
   const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
+  const [isBudgetDialogOpen, setIsBudgetDialogOpen] = useState(false);
+  const [tempBudget, setTempBudget] = useState(budget.toString());
 
   if (!isHydrated) return null;
   if (!lang) return <LanguageSelector onSelect={setLang} />;
@@ -86,6 +106,16 @@ export default function Home() {
   const totalExpense = transactions
     .filter(tx => tx.type === 'expense')
     .reduce((acc, tx) => acc + tx.amount, 0);
+
+  const currentMonthExpenses = transactions
+    .filter(tx => {
+      const date = new Date(tx.date);
+      return tx.type === 'expense' && date >= startOfMonth(new Date()) && date <= endOfMonth(new Date());
+    })
+    .reduce((acc, tx) => acc + tx.amount, 0);
+
+  const budgetProgress = budget > 0 ? (currentMonthExpenses / budget) * 100 : 0;
+  const isOverBudget = currentMonthExpenses > budget;
 
   const openStudio = (mode: 'income' | 'expense' | 'all') => {
     setStudioMode(mode);
@@ -147,6 +177,25 @@ export default function Home() {
             <DropdownMenuLabel className="px-3 pt-3 pb-1 text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{t.settings}</DropdownMenuLabel>
             <DropdownMenuSeparator className="mx-2 my-2" />
             
+            <DropdownMenuItem onClick={() => { setTempBudget(budget.toString()); setIsBudgetDialogOpen(true); }} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
+              <Target className="w-4 h-4" />
+              <span className="font-semibold">{t.setBudget}</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger className="gap-2 p-3 rounded-xl focus:bg-primary/5 transition-colors cursor-pointer">
+                <Coins className="w-4 h-4" />
+                <span className="font-semibold">{t.changeCurrency}</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="rounded-xl border-none shadow-xl">
+                {['₹', '$', '€', '£', '¥'].map((curr) => (
+                  <DropdownMenuItem key={curr} onClick={() => setCurrency(curr)} className="gap-2 p-3 rounded-xl cursor-pointer">
+                    <span className="font-bold">{curr}</span> {curr === '₹' ? 'Rupee' : curr === '$' ? 'Dollar' : curr === '€' ? 'Euro' : curr === '£' ? 'Pound' : 'Yen'}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            
             <DropdownMenuItem onClick={() => openStudio('all')} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
               <Tag className="w-4 h-4" />
               <span className="font-semibold">{t.categoryStudio}</span>
@@ -187,7 +236,7 @@ export default function Home() {
             {t.balance}
           </span>
           <h2 className="text-6xl font-headline font-bold mb-10 tracking-tighter">
-            ₹{balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            {currency}{balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </h2>
           
           <div className="grid grid-cols-2 gap-4">
@@ -196,18 +245,44 @@ export default function Home() {
                 <TrendingUp className="w-4 h-4" />
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]">{t.income}</span>
               </div>
-              <span className="text-xl font-headline font-bold">₹{totalIncome.toLocaleString()}</span>
+              <span className="text-xl font-headline font-bold">{currency}{totalIncome.toLocaleString()}</span>
             </div>
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 flex flex-col items-center">
               <div className="flex items-center gap-2 mb-2 text-primary-foreground/60">
                 <TrendingDown className="w-4 h-4" />
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]">{t.expense}</span>
               </div>
-              <span className="text-xl font-headline font-bold">₹{totalExpense.toLocaleString()}</span>
+              <span className="text-xl font-headline font-bold">{currency}{totalExpense.toLocaleString()}</span>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {/* Budget Progress Section */}
+      {budget > 0 && (
+        <Card className="mb-8 rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6 animate-in slide-in-from-bottom-4">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <Target className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-sm">{t.budget}</h3>
+                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{t.monthlyLimit}: {currency}{budget.toLocaleString()}</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <span className={`text-sm font-bold ${isOverBudget ? 'text-destructive' : 'text-primary'}`}>
+                {isOverBudget ? t.overspent : t.remaining}
+              </span>
+              <p className="text-lg font-headline font-bold">
+                {currency}{Math.abs(budget - currentMonthExpenses).toLocaleString()}
+              </p>
+            </div>
+          </div>
+          <Progress value={budgetProgress} className={`h-3 rounded-full ${isOverBudget ? 'bg-destructive/10' : 'bg-primary/10'}`} />
+        </Card>
+      )}
 
       {/* Action Buttons */}
       <div className="grid grid-cols-2 gap-6 mb-10 items-start">
@@ -248,7 +323,7 @@ export default function Home() {
 
       {/* Spending Chart Section */}
       <div className="mb-10 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-        <SpendingChart transactions={transactions} title={t.spendingByCategory} />
+        <SpendingChart transactions={transactions} title={t.spendingByCategory} currency={currency} />
       </div>
 
       {/* Transactions History */}
@@ -332,7 +407,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-5">
                   <div className={`text-right font-headline font-bold text-lg ${tx.type === 'income' ? 'text-income' : 'text-expense'}`}>
-                    {tx.type === 'income' ? '+' : '-'}₹{tx.amount.toLocaleString()}
+                    {tx.type === 'income' ? '+' : '-'}{currency}{tx.amount.toLocaleString()}
                   </div>
                   <Button 
                     variant="ghost" 
@@ -358,6 +433,7 @@ export default function Home() {
         lang={lang}
         onAdd={addTransaction}
         onManageCategories={() => openStudio(modalType)}
+        currency={currency}
       />
       <CategoryStudio 
         isOpen={isStudioOpen} 
@@ -368,6 +444,44 @@ export default function Home() {
         onRemove={removeCategory}
         mode={studioMode}
       />
+
+      {/* Budget Dialog */}
+      <Dialog open={isBudgetDialogOpen} onOpenChange={setIsBudgetDialogOpen}>
+        <DialogContent className="rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-headline font-bold flex items-center gap-3">
+              <Target className="w-6 h-6 text-primary" /> {t.setBudget}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-6 space-y-4">
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.monthlyLimit}</Label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-muted-foreground">{currency}</span>
+                <Input 
+                  type="number" 
+                  value={tempBudget} 
+                  onChange={(e) => setTempBudget(e.target.value)}
+                  className="pl-10 h-14 rounded-2xl bg-muted/30 border-none font-headline font-bold text-xl"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter className="gap-3">
+            <Button variant="ghost" onClick={() => setIsBudgetDialogOpen(false)} className="h-12 rounded-xl flex-1 font-bold">{t.cancel}</Button>
+            <Button 
+              onClick={() => {
+                setBudget(parseFloat(tempBudget) || 0);
+                setIsBudgetDialogOpen(false);
+              }}
+              className="h-12 rounded-xl flex-1 font-bold bg-primary shadow-lg shadow-primary/20"
+            >
+              {t.save}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Clear Data Alert */}
       <AlertDialog open={isClearAlertOpen} onOpenChange={setIsClearAlertOpen}>

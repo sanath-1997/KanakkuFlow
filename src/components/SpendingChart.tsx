@@ -10,9 +10,10 @@ const COLORS = ['#2855BF', '#12B76A', '#F04438', '#F97316', '#8B5CF6', '#EC4899'
 interface SpendingChartProps {
   transactions: Transaction[];
   title: string;
+  currency?: string;
 }
 
-export function SpendingChart({ transactions, title }: SpendingChartProps) {
+export function SpendingChart({ transactions, title, currency = '₹' }: SpendingChartProps) {
   const expenseData = React.useMemo(() => {
     const grouped = transactions
       .filter(tx => tx.type === 'expense')
@@ -51,7 +52,7 @@ export function SpendingChart({ transactions, title }: SpendingChartProps) {
               </Pie>
               <Tooltip 
                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Amount']}
+                formatter={(value: number) => [`${currency}${value.toLocaleString()}`, 'Amount']}
               />
             </PieChart>
           </ResponsiveContainer>

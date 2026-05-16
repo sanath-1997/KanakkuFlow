@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState, useEffect } from 'react';
@@ -23,9 +22,10 @@ interface TransactionModalProps {
   lang: Language;
   onAdd: (tx: Omit<Transaction, 'id'>) => void;
   onManageCategories?: () => void;
+  currency?: string;
 }
 
-export function TransactionModal({ isOpen, onClose, type, categories, lang, onAdd, onManageCategories }: TransactionModalProps) {
+export function TransactionModal({ isOpen, onClose, type, categories, lang, onAdd, onManageCategories, currency = '₹' }: TransactionModalProps) {
   const t = translations[lang];
   const [amount, setAmount] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -72,13 +72,13 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
             <div className="space-y-2">
               <Label htmlFor="amount" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t.amount}</Label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-headline font-bold">₹</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-headline font-bold">{currency}</span>
                 <Input 
                   id="amount" 
                   type="number" 
                   value={amount} 
                   onChange={(e) => setAmount(e.target.value)} 
-                  className="pl-8 h-14 rounded-2xl bg-muted/30 border-none shadow-inner font-headline text-xl font-bold transition-all focus:bg-white focus:shadow-md"
+                  className="pl-10 h-14 rounded-2xl bg-muted/30 border-none shadow-inner font-headline text-xl font-bold transition-all focus:bg-white focus:shadow-md"
                   placeholder="0.00"
                 />
               </div>
