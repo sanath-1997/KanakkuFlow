@@ -11,7 +11,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        headline: ['Space Grotesk', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
@@ -44,6 +44,14 @@ export default {
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
+        },
+        income: {
+          DEFAULT: 'hsl(var(--income))',
+          foreground: 'hsl(var(--income-foreground))',
+        },
+        expense: {
+          DEFAULT: 'hsl(var(--expense))',
+          foreground: 'hsl(var(--expense-foreground))',
         },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
