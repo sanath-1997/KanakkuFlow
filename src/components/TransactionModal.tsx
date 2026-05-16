@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Category, Transaction } from '@/hooks/use-kanakku';
 import { translations, type Language } from '@/lib/translations';
-import { Tag } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 interface TransactionModalProps {
   isOpen: boolean;
@@ -26,7 +26,7 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedEmoticon, setSelectedEmoticon] = useState('');
 
-  // Filter categories by type
+  // Filter categories by type to ensure income and expense categories are different
   const filteredCategories = categories.filter(cat => cat.type === type);
 
   // Auto-reset when modal closes/opens
@@ -88,7 +88,7 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
                 </SelectTrigger>
                 <SelectContent className="rounded-2xl border-none shadow-xl">
                   {filteredCategories.map(cat => (
-                    <SelectItem key={cat.id} value={cat.name} className="rounded-xl m-1 h-10">
+                    <SelectItem key={cat.id} value={cat.name} className="rounded-xl m-1 h-10 cursor-pointer">
                       <span className="mr-2 text-lg">{cat.emoticon}</span> {cat.name}
                     </SelectItem>
                   ))}
@@ -97,14 +97,14 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
                       <Button 
                         type="button" 
                         variant="ghost" 
-                        className="w-full justify-start gap-2 h-10 rounded-xl text-primary hover:text-primary hover:bg-primary/5"
+                        className="w-full justify-start gap-2 h-10 rounded-xl text-primary font-bold hover:bg-primary/5 transition-colors"
                         onClick={(e) => {
                           e.stopPropagation();
                           onManageCategories();
                           onClose();
                         }}
                       >
-                        <Tag className="w-4 h-4" /> {t.manageCategories}
+                        <Plus className="w-4 h-4" /> {t.addCategory}
                       </Button>
                     </div>
                   )}
