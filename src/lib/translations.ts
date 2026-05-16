@@ -27,6 +27,10 @@ export const translations = {
     incomeCategories: 'Income Categories',
     expenseCategories: 'Expense Categories',
     done: 'Done',
+    filterByDate: 'Filter by Date',
+    allTransactions: 'All Transactions',
+    noTransactionsOnDate: 'No transactions on this date.',
+    clearFilter: 'Clear Filter',
   },
   ta: {
     welcome: 'கணக்கு ஃப்ளோவிற்கு வரவேற்கிறோம்',
@@ -54,6 +58,10 @@ export const translations = {
     incomeCategories: 'வரவு வகைகள்',
     expenseCategories: 'செலவு வகைகள்',
     done: 'முடிந்தது',
+    filterByDate: 'தேதி வாரியாக வடிகட்டவும்',
+    allTransactions: 'அனைத்து பரிவர்த்தனைகள்',
+    noTransactionsOnDate: 'இந்த தேதியில் பரிவர்த்தனைகள் இல்லை.',
+    clearFilter: 'வடிகட்டியை அகற்று',
   },
   ml: {
     welcome: 'കണക്ക് ഫ്ലോയിലേക്ക് സ്വാഗതം',
@@ -81,5 +89,9 @@ export const translations = {
     incomeCategories: 'വരവ് വിഭാഗങ്ങൾ',
     expenseCategories: 'ചെലവ് വിഭാഗങ്ങൾ',
     done: 'പൂർത്തിയായി',
+    filterByDate: 'തിയതി അനുസരിച്ച് ഫിൽട്ടർ ചെയ്യുക',
+    allTransactions: 'എല്ലാ ഇടപാടുകളും',
+    noTransactionsOnDate: 'ഈ തീയതിയിൽ ഇടപാടുകളൊന്നുമില്ല.',
+    clearFilter: 'ഫിൽട്ടർ ഒഴിവാക്കുക',
   }
 };

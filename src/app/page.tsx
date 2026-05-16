@@ -20,9 +20,11 @@ import {
   TrendingDown, 
   Globe,
   Trash2,
-  Tag
+  Tag,
+  Calendar as CalendarIcon,
+  X
 } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, isSameDay } from 'date-fns';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,6 +33,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 
 export default function Home() {
   const { 
@@ -50,6 +58,7 @@ export default function Home() {
   const [modalType, setModalType] = useState<'income' | 'expense'>('expense');
   const [isStudioOpen, setIsStudioOpen] = useState(false);
   const [studioMode, setStudioMode] = useState<'income' | 'expense' | 'all'>('all');
+  const [filterDate, setFilterDate] = useState<Date | undefined>(undefined);
 
   if (!isHydrated) return null;
   if (!lang) return <LanguageSelector onSelect={setLang} />;
@@ -68,6 +77,10 @@ export default function Home() {
     setStudioMode(mode);
     setIsStudioOpen(true);
   };
+
+  const filteredTransactions = filterDate 
+    ? transactions.filter(tx => isSameDay(new Date(tx.date), filterDate))
+    : transactions;
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 pb-24 md:pb-8 min-h-screen">
@@ -163,17 +176,19 @@ export default function Home() {
             </div>
             {t.expense}
           </Button>
-          <Button 
-            variant="outline"
-            size="default"
-            onClick={() => openStudio('all')}
-            className="self-center flex items-center gap-3 h-12 px-6 rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/5 hover:border-primary/30 transition-all group border-2 border-border/60 bg-white shadow-sm"
-          >
-            <div className="w-8 h-8 rounded-xl bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-              <Tag className="w-4 h-4" />
-            </div>
-            <span className="text-xs font-bold uppercase tracking-widest">{t.manageCategories}</span>
-          </Button>
+          <div className="mt-2">
+            <Button 
+              variant="outline"
+              size="default"
+              onClick={() => openStudio('all')}
+              className="flex items-center gap-3 h-14 px-8 rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/5 hover:border-primary/30 transition-all group border-2 border-border/60 bg-white shadow-sm w-full"
+            >
+              <div className="w-8 h-8 rounded-xl bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                <Tag className="w-4 h-4" />
+              </div>
+              <span className="text-xs font-bold uppercase tracking-widest">{t.manageCategories}</span>
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -184,23 +199,68 @@ export default function Home() {
 
       {/* Transactions History */}
       <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-        <div className="flex items-center justify-between mb-6 px-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4 px-2">
           <h3 className="text-xl font-headline font-bold flex items-center gap-3">
             <History className="w-6 h-6 text-primary" /> {t.recentTransactions}
           </h3>
-          <span className="text-xs text-muted-foreground font-bold bg-muted/50 px-3 py-1 rounded-full">{transactions.length} total</span>
+          
+          <div className="flex items-center gap-2">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className={`rounded-xl border-2 transition-all ${filterDate ? 'border-primary text-primary bg-primary/5' : 'border-border/60'}`}
+                >
+                  <CalendarIcon className="w-4 h-4 mr-2" />
+                  {filterDate ? format(filterDate, 'MMM dd, yyyy') : t.filterByDate}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 rounded-2xl shadow-xl border-none overflow-hidden" align="end">
+                <Calendar
+                  mode="single"
+                  selected={filterDate}
+                  onSelect={setFilterDate}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            
+            {filterDate && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setFilterDate(undefined)}
+                className="rounded-full h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
+                title={t.clearFilter}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
         </div>
 
-        {transactions.length === 0 ? (
+        {filteredTransactions.length === 0 ? (
           <div className="bg-white/50 backdrop-blur-sm border-2 border-dashed border-muted p-16 rounded-[2.5rem] text-center">
             <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6 text-muted-foreground/30">
               <Wallet className="w-10 h-10" />
             </div>
-            <p className="text-muted-foreground italic font-medium text-lg">{t.noTransactions}</p>
+            <p className="text-muted-foreground italic font-medium text-lg">
+              {filterDate ? t.noTransactionsOnDate : t.noTransactions}
+            </p>
+            {filterDate && (
+              <Button 
+                variant="link" 
+                onClick={() => setFilterDate(undefined)}
+                className="mt-2 text-primary font-bold"
+              >
+                {t.allTransactions}
+              </Button>
+            )}
           </div>
         ) : (
           <div className="space-y-4">
-            {transactions.map((tx) => (
+            {filteredTransactions.map((tx) => (
               <div 
                 key={tx.id} 
                 className="group bg-white rounded-[1.5rem] p-5 shadow-sm border border-transparent hover:border-primary/20 hover:shadow-md transition-all flex items-center justify-between animate-in fade-in zoom-in-95 duration-300"
