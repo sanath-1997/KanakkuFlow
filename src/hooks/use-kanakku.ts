@@ -15,7 +15,6 @@ export interface Transaction {
   emoticon: string;
   type: 'income' | 'expense';
   date: string;
-  description?: string;
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
@@ -68,7 +67,7 @@ export function useKanakku() {
       try {
         setTransactions(JSON.parse(storedTransactions));
       } catch (e) {
-        // Silent recovery for user data
+        // Silent recovery
       }
     }
     
