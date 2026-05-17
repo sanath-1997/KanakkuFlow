@@ -71,20 +71,18 @@ export function useKanakku() {
       }
     }
     
+    let cats = DEFAULT_CATEGORIES;
     if (storedCategories) {
       try {
         const parsed = JSON.parse(storedCategories);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          setCategories(parsed);
-        } else {
-          setCategories(DEFAULT_CATEGORIES);
+          cats = parsed;
         }
       } catch (e) {
-        setCategories(DEFAULT_CATEGORIES);
+        // use defaults
       }
-    } else {
-      setCategories(DEFAULT_CATEGORIES);
     }
+    setCategories(cats);
     
     setIsHydrated(true);
   }, []);
