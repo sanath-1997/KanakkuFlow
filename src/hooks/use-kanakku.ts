@@ -24,25 +24,24 @@ const DEFAULT_CATEGORIES: Category[] = [
   { id: 'e2', name: 'Groceries', emoticon: '🛒', type: 'expense' },
   { id: 'e3', name: 'Housing & Rent', emoticon: '🏠', type: 'expense' },
   { id: 'e4', name: 'Transportation', emoticon: '🚗', type: 'expense' },
-  { id: 'e5', name: 'Bills & Utilities', emoticon: '💡', type: 'expense' },
-  { id: 'e6', name: 'Shopping', emoticon: '🛍️', type: 'expense' },
-  { id: 'e7', name: 'Medical & Health', emoticon: '🏥', type: 'expense' },
-  { id: 'e8', name: 'Entertainment', emoticon: '🎬', type: 'expense' },
+  { id: 'e5', name: 'Electricity & Water', emoticon: '💡', type: 'expense' },
+  { id: 'e6', name: 'Mobile & Internet', emoticon: '📱', type: 'expense' },
+  { id: 'e7', name: 'Shopping', emoticon: '🛍️', type: 'expense' },
+  { id: 'e8', name: 'Health & Medical', emoticon: '🏥', type: 'expense' },
   { id: 'e9', name: 'Education', emoticon: '🎓', type: 'expense' },
-  { id: 'e10', name: 'Travel & Trips', emoticon: '✈️', type: 'expense' },
-  { id: 'e11', name: 'Personal Care', emoticon: '🧴', type: 'expense' },
+  { id: 'e10', name: 'Entertainment', emoticon: '🎬', type: 'expense' },
+  { id: 'e11', name: 'Travel & Trips', emoticon: '✈️', type: 'expense' },
   { id: 'e12', name: 'Others', emoticon: '📦', type: 'expense' },
   
   // Relatable Income
   { id: 'i1', name: 'Monthly Salary', emoticon: '💰', type: 'income' },
   { id: 'i2', name: 'Business Profit', emoticon: '🏢', type: 'income' },
   { id: 'i3', name: 'Freelance Work', emoticon: '👨‍💻', type: 'income' },
-  { id: 'i4', name: 'Stock Investments', emoticon: '📈', type: 'income' },
-  { id: 'i5', name: 'Dividends', emoticon: '💳', type: 'income' },
-  { id: 'i6', name: 'Rental Income', emoticon: '🏘️', type: 'income' },
-  { id: 'i7', name: 'Bonuses', emoticon: '🎁', type: 'income' },
-  { id: 'i8', name: 'Gift / Award', emoticon: '🧧', type: 'income' },
-  { id: 'i9', name: 'Other Income', emoticon: '💵', type: 'income' },
+  { id: 'i4', name: 'Stock Dividends', emoticon: '📈', type: 'income' },
+  { id: 'i5', name: 'Rental Income', emoticon: '🏘️', type: 'income' },
+  { id: 'i6', name: 'Interest Earned', emoticon: '🏦', type: 'income' },
+  { id: 'i7', name: 'Gifts & Awards', emoticon: '🎁', type: 'income' },
+  { id: 'i8', name: 'Other Income', emoticon: '💵', type: 'income' },
 ];
 
 export function useKanakku() {
@@ -69,7 +68,7 @@ export function useKanakku() {
       try {
         setTransactions(JSON.parse(storedTransactions));
       } catch (e) {
-        console.error("Failed to parse transactions", e);
+        // Silent recovery for user data
       }
     }
     
@@ -82,7 +81,6 @@ export function useKanakku() {
           setCategories(DEFAULT_CATEGORIES);
         }
       } catch (e) {
-        console.error("Failed to parse categories", e);
         setCategories(DEFAULT_CATEGORIES);
       }
     } else {

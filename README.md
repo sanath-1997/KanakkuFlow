@@ -11,7 +11,6 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
 - **Data Export**: Export your transactions to CSV format for external analysis.
 - **Filtering**: View transactions for specific dates using a built-in calendar filter.
 - **Currency Support**: Switch between multiple currency symbols (₹, $, €, £, ¥).
-- **Smart Categorization**: (Experimental) Genkit-powered suggestions for categories based on descriptions.
 
 ## Tech Stack
 
@@ -20,7 +19,6 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
 - **Components**: ShadCN UI
 - **Icons**: Lucide React
 - **Charts**: Recharts
-- **AI/GenAI**: Genkit (Google Gemini)
 
 ## Getting Started
 
@@ -28,7 +26,6 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
 
 - Node.js 18+ 
 - npm or yarn
-- A Google Gemini API Key (for GenAI features)
 
 ### Installation
 
@@ -42,12 +39,7 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
    npm install
    ```
 
-3. Create a `.env` file in the root and add your API key:
-   ```env
-   GOOGLE_GENAI_API_KEY=your_api_key_here
-   ```
-
-4. Run the development server:
+3. Run the development server:
    ```bash
    npm run dev
    ```
@@ -71,8 +63,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 2. **Deploy on Vercel**:
    - Go to [Vercel](https://vercel.com) and click **"New Project"**.
    - Import your GitHub repository.
-   - In the **Environment Variables** section, add:
-     - `GOOGLE_GENAI_API_KEY`: Your Gemini API key.
    - Click **Deploy**.
 
 ## License

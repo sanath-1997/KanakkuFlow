@@ -283,7 +283,7 @@ export default function Home() {
           <Plus className="w-5 h-5 md:w-6 md:h-6" />
           {t.income}
         </Button>
-        <div className="flex flex-col gap-5 mt-2">
+        <div className="flex flex-col gap-6 mt-4">
           <Button 
             onClick={() => { setModalType('expense'); setIsModalOpen(true); }}
             className="bg-expense hover:bg-expense/90 text-white rounded-3xl h-16 md:h-20 text-lg md:text-xl font-headline font-bold shadow-xl shadow-expense/20 gap-2 md:gap-4 transition-all active:scale-95"
@@ -294,7 +294,7 @@ export default function Home() {
           <Button 
             variant="outline"
             onClick={() => openStudio('all')}
-            className="flex items-center justify-center gap-3 h-14 md:h-16 rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all border-2 border-border/60 bg-white"
+            className="flex items-center justify-center gap-3 h-14 md:h-16 rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all border-2 border-border/60 bg-white shadow-sm"
           >
             <Tag className="w-4 h-4" />
             <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{t.manageCategories}</span>
