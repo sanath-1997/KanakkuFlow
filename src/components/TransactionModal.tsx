@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState, useEffect } from 'react';
@@ -51,7 +50,14 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!amount) return;
+    if (!amount || parseFloat(amount) <= 0) {
+      toast({
+        variant: "destructive",
+        title: t.error,
+        description: t.amount > 0 ? t.amount : "Please enter a valid amount",
+      });
+      return;
+    }
     
     if (!selectedCategory) {
       toast({
@@ -75,21 +81,21 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] rounded-[2rem] p-8 border-none shadow-2xl">
+      <DialogContent className="sm:max-w-[425px] rounded-[2rem] p-6 md:p-8 border-none shadow-2xl">
         <DialogHeader>
-          <DialogTitle className={`text-3xl font-headline font-bold mb-4 ${type === 'income' ? 'text-income' : 'text-expense'}`}>
+          <DialogTitle className={`text-2xl md:text-3xl font-headline font-bold mb-4 ${type === 'income' ? 'text-income' : 'text-expense'}`}>
             {type === 'income' ? t.income : t.expense}
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-6 pt-2">
-          <div className="grid grid-cols-1 gap-6">
+        <form onSubmit={handleSubmit} className="space-y-5 pt-2">
+          <div className="grid grid-cols-1 gap-5">
             <div className="space-y-2">
               <Label htmlFor="description" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t.description}</Label>
               <Input 
                 id="description" 
                 value={description} 
                 onChange={(e) => setDescription(e.target.value)} 
-                className="h-14 rounded-2xl bg-muted/30 border-none shadow-inner font-medium transition-all focus:bg-white focus:shadow-md"
+                className="h-12 md:h-14 rounded-2xl bg-muted/30 border-none shadow-inner font-medium transition-all focus:bg-white"
                 placeholder="e.g. Starbucks Coffee"
               />
             </div>
@@ -103,7 +109,7 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
                   type="number" 
                   value={amount} 
                   onChange={(e) => setAmount(e.target.value)} 
-                  className="pl-10 h-14 rounded-2xl bg-muted/30 border-none shadow-inner font-headline text-xl font-bold transition-all focus:bg-white focus:shadow-md"
+                  className="pl-10 h-12 md:h-14 rounded-2xl bg-muted/30 border-none shadow-inner font-headline text-lg md:text-xl font-bold transition-all focus:bg-white"
                   placeholder="0.00"
                 />
               </div>
@@ -116,7 +122,7 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-full h-14 rounded-2xl bg-muted/30 border-none shadow-inner text-left font-normal justify-start px-4 transition-all focus:bg-white focus:shadow-md",
+                      "w-full h-12 md:h-14 rounded-2xl bg-muted/30 border-none shadow-inner text-left font-normal justify-start px-4 transition-all focus:bg-white",
                       !date && "text-muted-foreground"
                     )}
                   >
@@ -142,7 +148,7 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
                 const cat = categories.find(c => c.name === val);
                 if (cat) setSelectedEmoticon(cat.emoticon);
               }}>
-                <SelectTrigger className="h-14 rounded-2xl bg-muted/30 border-none shadow-inner transition-all focus:bg-white focus:shadow-md">
+                <SelectTrigger className="h-12 md:h-14 rounded-2xl bg-muted/30 border-none shadow-inner transition-all focus:bg-white">
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent className="rounded-2xl border-none shadow-xl">
@@ -172,13 +178,13 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
             </div>
           </div>
 
-          <div className="flex gap-4 pt-4">
-            <Button type="button" variant="ghost" onClick={onClose} className="flex-1 h-14 rounded-2xl text-base font-headline hover:bg-muted/50 transition-all">
+          <div className="flex gap-3 md:gap-4 pt-2">
+            <Button type="button" variant="ghost" onClick={onClose} className="flex-1 h-12 md:h-14 rounded-2xl text-base font-headline hover:bg-muted/50 transition-all">
               {t.cancel}
             </Button>
             <Button 
               type="submit" 
-              className={`flex-1 h-14 rounded-2xl text-base font-headline font-bold shadow-lg transition-all active:scale-95 ${type === 'income' ? 'bg-income hover:bg-income/90 shadow-income/20' : 'bg-expense hover:bg-expense/90 shadow-expense/20'}`}
+              className={`flex-1 h-12 md:h-14 rounded-2xl text-base font-headline font-bold shadow-lg transition-all active:scale-95 ${type === 'income' ? 'bg-income hover:bg-income/90 shadow-income/20' : 'bg-expense hover:bg-expense/90 shadow-expense/20'}`}
             >
               {t.save}
             </Button>

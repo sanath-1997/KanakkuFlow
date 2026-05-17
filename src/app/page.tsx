@@ -132,7 +132,7 @@ export default function Home() {
         format(new Date(tx.date), 'yyyy-MM-dd HH:mm:ss'),
         tx.type,
         tx.category,
-        tx.description || '',
+        `"${(tx.description || '').replace(/"/g, '""')}"`,
         tx.amount,
         tx.emoticon
       ].join(','))
@@ -156,14 +156,13 @@ export default function Home() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8 pb-24 md:pb-8 min-h-screen">
-      {/* Header */}
-      <header className="flex items-center justify-between mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
+      <header className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center text-primary-foreground font-headline italic shadow-lg shadow-primary/30">
-            <span className="text-2xl">K</span>
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-primary flex items-center justify-center text-primary-foreground font-headline italic shadow-lg shadow-primary/30">
+            <span className="text-xl md:text-2xl">K</span>
           </div>
           <div>
-            <h1 className="text-xl font-headline font-bold tracking-tight text-primary">Kanakku Flow</h1>
+            <h1 className="text-lg md:text-xl font-headline font-bold tracking-tight text-primary">Kanakku Flow</h1>
             <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold">{t.subtitle}</p>
           </div>
         </div>
@@ -197,11 +196,6 @@ export default function Home() {
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             
-            <DropdownMenuItem onClick={() => openStudio('all')} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
-              <Tag className="w-4 h-4" />
-              <span className="font-semibold">{t.categoryStudio}</span>
-            </DropdownMenuItem>
-            
             <DropdownMenuItem onClick={handleExport} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
               <Download className="w-4 h-4" />
               <span className="font-semibold">{t.exportData}</span>
@@ -228,40 +222,37 @@ export default function Home() {
         </DropdownMenu>
       </header>
 
-      {/* Balance Card */}
-      <Card className="bg-primary text-primary-foreground rounded-[2.5rem] border-none shadow-2xl shadow-primary/20 mb-8 overflow-hidden relative animate-in zoom-in duration-700">
-        <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
-        <CardContent className="p-10 relative z-10 text-center">
-          <span className="text-sm text-primary-foreground/70 font-bold uppercase tracking-[0.3em] mb-4 block">
+      <Card className="bg-primary text-primary-foreground rounded-[2rem] md:rounded-[2.5rem] border-none shadow-2xl shadow-primary/20 mb-8 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-32 md:w-48 h-32 md:h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <CardContent className="p-8 md:p-10 relative z-10 text-center">
+          <span className="text-xs text-primary-foreground/70 font-bold uppercase tracking-[0.3em] mb-4 block">
             {t.balance}
           </span>
-          <h2 className="text-6xl font-headline font-bold mb-10 tracking-tighter">
+          <h2 className="text-4xl md:text-6xl font-headline font-bold mb-8 md:mb-10 tracking-tighter">
             {currency}{balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </h2>
           
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 flex flex-col items-center">
-              <div className="flex items-center gap-2 mb-2 text-primary-foreground/60">
-                <TrendingUp className="w-4 h-4" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">{t.income}</span>
+          <div className="grid grid-cols-2 gap-3 md:gap-4">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-white/10 flex flex-col items-center">
+              <div className="flex items-center gap-2 mb-1 text-primary-foreground/60">
+                <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em]">{t.income}</span>
               </div>
-              <span className="text-xl font-headline font-bold">{currency}{totalIncome.toLocaleString()}</span>
+              <span className="text-lg md:text-xl font-headline font-bold">{currency}{totalIncome.toLocaleString()}</span>
             </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/10 flex flex-col items-center">
-              <div className="flex items-center gap-2 mb-2 text-primary-foreground/60">
-                <TrendingDown className="w-4 h-4" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">{t.expense}</span>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-white/10 flex flex-col items-center">
+              <div className="flex items-center gap-2 mb-1 text-primary-foreground/60">
+                <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />
+                <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em]">{t.expense}</span>
               </div>
-              <span className="text-xl font-headline font-bold">{currency}{totalExpense.toLocaleString()}</span>
+              <span className="text-lg md:text-xl font-headline font-bold">{currency}{totalExpense.toLocaleString()}</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Budget Progress Section */}
       {budget > 0 && (
-        <Card className="mb-8 rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6 animate-in slide-in-from-bottom-4">
+        <Card className="mb-8 rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
@@ -273,63 +264,51 @@ export default function Home() {
               </div>
             </div>
             <div className="text-right">
-              <span className={`text-sm font-bold ${isOverBudget ? 'text-destructive' : 'text-primary'}`}>
+              <span className={`text-xs font-bold ${isOverBudget ? 'text-destructive' : 'text-primary'}`}>
                 {isOverBudget ? t.overspent : t.remaining}
               </span>
-              <p className="text-lg font-headline font-bold">
+              <p className="text-base md:text-lg font-headline font-bold">
                 {currency}{Math.abs(budget - currentMonthExpenses).toLocaleString()}
               </p>
             </div>
           </div>
-          <Progress value={budgetProgress} className={`h-3 rounded-full ${isOverBudget ? 'bg-destructive/10' : 'bg-primary/10'}`} />
+          <Progress value={budgetProgress} className={`h-2.5 rounded-full ${isOverBudget ? 'bg-destructive/10' : 'bg-primary/10'}`} />
         </Card>
       )}
 
-      {/* Action Buttons */}
-      <div className="grid grid-cols-2 gap-6 mb-10 items-start">
+      <div className="grid grid-cols-2 gap-4 md:gap-6 mb-10 items-start">
         <Button 
           onClick={() => { setModalType('income'); setIsModalOpen(true); }}
-          className="bg-income hover:bg-income/90 text-white rounded-3xl h-20 text-xl font-headline font-bold shadow-xl shadow-income/20 gap-4 transition-all active:scale-95 border-none w-full"
+          className="bg-income hover:bg-income/90 text-white rounded-3xl h-16 md:h-20 text-lg md:text-xl font-headline font-bold shadow-xl shadow-income/20 gap-2 md:gap-4 transition-all active:scale-95"
         >
-          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-            <Plus className="w-6 h-6" />
-          </div>
+          <Plus className="w-5 h-5 md:w-6 md:h-6" />
           {t.income}
         </Button>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
           <Button 
             onClick={() => { setModalType('expense'); setIsModalOpen(true); }}
-            className="bg-expense hover:bg-expense/90 text-white rounded-3xl h-20 text-xl font-headline font-bold shadow-xl shadow-expense/20 gap-4 transition-all active:scale-95 border-none w-full"
+            className="bg-expense hover:bg-expense/90 text-white rounded-3xl h-16 md:h-20 text-lg md:text-xl font-headline font-bold shadow-xl shadow-expense/20 gap-2 md:gap-4 transition-all active:scale-95"
           >
-            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-              <Minus className="w-6 h-6" />
-            </div>
+            <Minus className="w-5 h-5 md:w-6 md:h-6" />
             {t.expense}
           </Button>
-          <div className="mt-2">
-            <Button 
-              variant="outline"
-              size="default"
-              onClick={() => openStudio('all')}
-              className="flex items-center gap-3 h-14 px-8 rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/5 hover:border-primary/30 transition-all group border-2 border-border/60 bg-white shadow-sm w-full"
-            >
-              <div className="w-8 h-8 rounded-xl bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                <Tag className="w-4 h-4" />
-              </div>
-              <span className="text-xs font-bold uppercase tracking-widest">{t.manageCategories}</span>
-            </Button>
-          </div>
+          <Button 
+            variant="outline"
+            onClick={() => openStudio('all')}
+            className="flex items-center justify-center gap-3 h-12 md:h-14 rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all border-2 border-border/60 bg-white"
+          >
+            <Tag className="w-4 h-4" />
+            <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{t.manageCategories}</span>
+          </Button>
         </div>
       </div>
 
-      {/* Spending Chart Section */}
-      <div className="mb-10 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+      <div className="mb-10">
         <SpendingChart transactions={transactions} title={t.spendingByCategory} currency={currency} />
       </div>
 
-      {/* Transactions History */}
-      <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4 px-2">
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-2">
           <h3 className="text-xl font-headline font-bold flex items-center gap-3">
             <History className="w-6 h-6 text-primary" /> {t.recentTransactions}
           </h3>
@@ -362,7 +341,6 @@ export default function Home() {
                 size="icon" 
                 onClick={() => setFilterDate(undefined)}
                 className="rounded-full h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
-                title={t.clearFilter}
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -371,53 +349,42 @@ export default function Home() {
         </div>
 
         {filteredTransactions.length === 0 ? (
-          <div className="bg-white/50 backdrop-blur-sm border-2 border-dashed border-muted p-16 rounded-[2.5rem] text-center">
-            <div className="w-20 h-20 bg-muted/20 rounded-full flex items-center justify-center mx-auto mb-6 text-muted-foreground/30">
-              <Wallet className="w-10 h-10" />
-            </div>
-            <p className="text-muted-foreground italic font-medium text-lg">
+          <div className="bg-white/50 backdrop-blur-sm border-2 border-dashed border-muted p-12 md:p-16 rounded-[2rem] md:rounded-[2.5rem] text-center">
+            <Wallet className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
+            <p className="text-muted-foreground italic font-medium">
               {filterDate ? t.noTransactionsOnDate : t.noTransactions}
             </p>
-            {filterDate && (
-              <Button 
-                variant="link" 
-                onClick={() => setFilterDate(undefined)}
-                className="mt-2 text-primary font-bold"
-              >
-                {t.allTransactions}
-              </Button>
-            )}
           </div>
         ) : (
           <div className="space-y-4">
             {filteredTransactions.map((tx) => (
               <div 
                 key={tx.id} 
-                className="group bg-white rounded-[1.5rem] p-5 shadow-sm border border-transparent hover:border-primary/20 hover:shadow-md transition-all flex items-center justify-between animate-in fade-in zoom-in-95 duration-300"
+                className="group bg-white rounded-[1.5rem] p-4 md:p-5 shadow-sm border border-transparent hover:border-primary/20 transition-all flex items-center justify-between"
               >
-                <div className="flex items-center gap-5">
-                  <div className="w-14 h-14 rounded-2xl bg-muted/30 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition-transform">
+                <div className="flex items-center gap-4 md:gap-5">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-muted/30 flex items-center justify-center text-2xl md:text-3xl">
                     {tx.emoticon}
                   </div>
                   <div>
-                    <h4 className="font-bold text-base leading-tight mb-1">{tx.category}</h4>
-                    {tx.description && <p className="text-xs text-muted-foreground mb-1 font-medium">{tx.description}</p>}
-                    <div className="flex items-center gap-3 text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
-                      <span>{format(new Date(tx.date), 'MMM dd, hh:mm a')}</span>
-                    </div>
+                    <h4 className="font-bold text-sm md:text-base leading-tight mb-0.5">{tx.category}</h4>
+                    {tx.description && <p className="text-xs text-muted-foreground mb-0.5">{tx.description}</p>}
+                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
+                      {format(new Date(tx.date), 'MMM dd, hh:mm a')}
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-5">
-                  <div className={`text-right font-headline font-bold text-lg ${tx.type === 'income' ? 'text-income' : 'text-expense'}`}>
+                <div className="flex items-center gap-3 md:gap-5">
+                  <div className={`text-right font-headline font-bold text-base md:text-lg ${tx.type === 'income' ? 'text-income' : 'text-expense'}`}>
                     {tx.type === 'income' ? '+' : '-'}{currency}{tx.amount.toLocaleString()}
                   </div>
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="opacity-0 group-hover:opacity-100 transition-opacity rounded-xl h-10 w-10 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                    className="rounded-xl h-9 w-9 text-muted-foreground hover:text-destructive"
                     onClick={() => deleteTransaction(tx.id)}
                   >
-                    <Trash2 className="w-5 h-5" />
+                    <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
@@ -426,7 +393,6 @@ export default function Home() {
         )}
       </div>
 
-      {/* Modals */}
       <TransactionModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
@@ -447,7 +413,6 @@ export default function Home() {
         mode={studioMode}
       />
 
-      {/* Budget Dialog */}
       <Dialog open={isBudgetDialogOpen} onOpenChange={setIsBudgetDialogOpen}>
         <DialogContent className="rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px]">
           <DialogHeader>
@@ -485,7 +450,6 @@ export default function Home() {
         </DialogContent>
       </Dialog>
 
-      {/* Clear Data Alert */}
       <AlertDialog open={isClearAlertOpen} onOpenChange={setIsClearAlertOpen}>
         <AlertDialogContent className="rounded-[2rem] border-none shadow-2xl p-8">
           <AlertDialogHeader>
