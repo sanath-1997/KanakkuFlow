@@ -231,7 +231,7 @@ export default function Home() {
             {currency}{balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </h2>
           
-          <div className="grid grid-cols-2 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-white/10 flex flex-col items-center">
               <div className="flex items-center gap-2 mb-1 text-primary-foreground/60">
                 <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
@@ -276,20 +276,20 @@ export default function Home() {
       )}
 
       <div className="flex flex-col gap-4 mb-10">
-        <div className="grid grid-cols-2 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 gap-4">
           <Button 
             onClick={() => { setModalType('income'); setIsModalOpen(true); }}
-            className="bg-income hover:bg-income/90 text-white rounded-3xl h-16 md:h-20 text-lg md:text-xl font-headline font-bold shadow-xl shadow-income/20 gap-2 md:gap-4 transition-all active:scale-95"
+            className="flex-1 bg-income hover:bg-income/90 text-white rounded-3xl h-16 md:h-20 text-lg md:text-xl font-headline font-bold shadow-xl shadow-income/20 gap-3 transition-all active:scale-95"
           >
-            <Plus className="w-5 h-5 md:w-6 md:h-6" />
-            {t.income}
+            <Plus className="w-6 h-6" />
+            <span>{t.income}</span>
           </Button>
           <Button 
             onClick={() => { setModalType('expense'); setIsModalOpen(true); }}
-            className="bg-expense hover:bg-expense/90 text-white rounded-3xl h-16 md:h-20 text-lg md:text-xl font-headline font-bold shadow-xl shadow-expense/20 gap-2 md:gap-4 transition-all active:scale-95"
+            className="flex-1 bg-expense hover:bg-expense/90 text-white rounded-3xl h-16 md:h-20 text-lg md:text-xl font-headline font-bold shadow-xl shadow-expense/20 gap-3 transition-all active:scale-95"
           >
-            <Minus className="w-5 h-5 md:w-6 md:h-6" />
-            {t.expense}
+            <Minus className="w-6 h-6" />
+            <span>{t.expense}</span>
           </Button>
         </div>
         

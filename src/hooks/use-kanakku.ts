@@ -18,7 +18,7 @@ export interface Transaction {
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
-  // Relatable Expenses
+  // Expense Categories
   { id: 'e1', name: 'Food & Dining', emoticon: '🍔', type: 'expense' },
   { id: 'e2', name: 'Groceries', emoticon: '🛒', type: 'expense' },
   { id: 'e3', name: 'Housing & Rent', emoticon: '🏠', type: 'expense' },
@@ -30,9 +30,11 @@ const DEFAULT_CATEGORIES: Category[] = [
   { id: 'e9', name: 'Education', emoticon: '🎓', type: 'expense' },
   { id: 'e10', name: 'Entertainment', emoticon: '🎬', type: 'expense' },
   { id: 'e11', name: 'Travel & Trips', emoticon: '✈️', type: 'expense' },
-  { id: 'e12', name: 'Others', emoticon: '📦', type: 'expense' },
+  { id: 'e12', name: 'Insurance', emoticon: '🛡️', type: 'expense' },
+  { id: 'e13', name: 'Home Maintenance', emoticon: '🛠️', type: 'expense' },
+  { id: 'e14', name: 'Others', emoticon: '📦', type: 'expense' },
   
-  // Relatable Income
+  // Income Categories
   { id: 'i1', name: 'Monthly Salary', emoticon: '💰', type: 'income' },
   { id: 'i2', name: 'Business Profit', emoticon: '🏢', type: 'income' },
   { id: 'i3', name: 'Freelance Work', emoticon: '👨‍💻', type: 'income' },
@@ -40,7 +42,8 @@ const DEFAULT_CATEGORIES: Category[] = [
   { id: 'i5', name: 'Rental Income', emoticon: '🏘️', type: 'income' },
   { id: 'i6', name: 'Interest Earned', emoticon: '🏦', type: 'income' },
   { id: 'i7', name: 'Gifts & Awards', emoticon: '🎁', type: 'income' },
-  { id: 'i8', name: 'Other Income', emoticon: '💵', type: 'income' },
+  { id: 'i8', name: 'Refunds', emoticon: '🔄', type: 'income' },
+  { id: 'i9', name: 'Other Income', emoticon: '💵', type: 'income' },
 ];
 
 export function useKanakku() {
@@ -66,29 +69,28 @@ export function useKanakku() {
     if (storedTransactions) {
       try {
         setTransactions(JSON.parse(storedTransactions));
-      } catch (e) {
-        // Silent recovery
-      }
+      } catch (e) {}
     }
     
-    let cats = DEFAULT_CATEGORIES;
     if (storedCategories) {
       try {
         const parsed = JSON.parse(storedCategories);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          cats = parsed;
+          setCategories(parsed);
+        } else {
+          setCategories(DEFAULT_CATEGORIES);
         }
       } catch (e) {
-        // use defaults
+        setCategories(DEFAULT_CATEGORIES);
       }
+    } else {
+      setCategories(DEFAULT_CATEGORIES);
     }
-    setCategories(cats);
     
     setIsHydrated(true);
   }, []);
 
   useEffect(() => {
-    // Save to LocalStorage whenever state changes
     if (isHydrated) {
       if (lang) localStorage.setItem('kanakku-lang', lang);
       localStorage.setItem('kanakku-txs', JSON.stringify(transactions));
