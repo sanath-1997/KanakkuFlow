@@ -30,7 +30,6 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
   const t = translations[lang];
   const { toast } = useToast();
   const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedEmoticon, setSelectedEmoticon] = useState('');
   const [date, setDate] = useState<Date>(new Date());
@@ -40,7 +39,6 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
   useEffect(() => {
     if (isOpen) {
       setAmount('');
-      setDescription('');
       setSelectedCategory('');
       setSelectedEmoticon('');
       setDate(new Date());
@@ -70,7 +68,6 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
     
     onAdd({
       amount: parseFloat(amount),
-      description: description.trim(),
       category: selectedCategory,
       emoticon: selectedEmoticon || '💰',
       type,
@@ -89,17 +86,6 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-5 pt-2">
           <div className="grid grid-cols-1 gap-5">
-            <div className="space-y-2">
-              <Label htmlFor="description" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t.description}</Label>
-              <Input 
-                id="description" 
-                value={description} 
-                onChange={(e) => setDescription(e.target.value)} 
-                className="h-12 md:h-14 rounded-2xl bg-muted/30 border-none shadow-inner font-medium transition-all focus:bg-white"
-                placeholder="e.g. Starbucks Coffee"
-              />
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="amount" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">{t.amount}</Label>
               <div className="relative">

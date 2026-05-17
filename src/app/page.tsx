@@ -125,14 +125,13 @@ export default function Home() {
   const handleExport = () => {
     if (transactions.length === 0) return;
     
-    const headers = ['Date', 'Type', 'Category', 'Description', 'Amount', 'Emoticon'];
+    const headers = ['Date', 'Type', 'Category', 'Amount', 'Emoticon'];
     const csvRows = [
       headers.join(','),
       ...transactions.map(tx => [
         format(new Date(tx.date), 'yyyy-MM-dd HH:mm:ss'),
         tx.type,
         tx.category,
-        `"${(tx.description || '').replace(/"/g, '""')}"`,
         tx.amount,
         tx.emoticon
       ].join(','))
@@ -284,7 +283,7 @@ export default function Home() {
           <Plus className="w-5 h-5 md:w-6 md:h-6" />
           {t.income}
         </Button>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5 mt-2">
           <Button 
             onClick={() => { setModalType('expense'); setIsModalOpen(true); }}
             className="bg-expense hover:bg-expense/90 text-white rounded-3xl h-16 md:h-20 text-lg md:text-xl font-headline font-bold shadow-xl shadow-expense/20 gap-2 md:gap-4 transition-all active:scale-95"
@@ -295,7 +294,7 @@ export default function Home() {
           <Button 
             variant="outline"
             onClick={() => openStudio('all')}
-            className="flex items-center justify-center gap-3 h-12 md:h-14 rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all border-2 border-border/60 bg-white"
+            className="flex items-center justify-center gap-3 h-14 md:h-16 rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all border-2 border-border/60 bg-white"
           >
             <Tag className="w-4 h-4" />
             <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{t.manageCategories}</span>
@@ -368,7 +367,6 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="font-bold text-sm md:text-base leading-tight mb-0.5">{tx.category}</h4>
-                    {tx.description && <p className="text-xs text-muted-foreground mb-0.5">{tx.description}</p>}
                     <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
                       {format(new Date(tx.date), 'MMM dd, hh:mm a')}
                     </p>
@@ -414,7 +412,7 @@ export default function Home() {
       />
 
       <Dialog open={isBudgetDialogOpen} onOpenChange={setIsBudgetDialogOpen}>
-        <DialogContent className="rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px]">
+        <DialogContent className="w-[95vw] rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-headline font-bold flex items-center gap-3">
               <Target className="w-6 h-6 text-primary" /> {t.setBudget}
@@ -451,7 +449,7 @@ export default function Home() {
       </Dialog>
 
       <AlertDialog open={isClearAlertOpen} onOpenChange={setIsClearAlertOpen}>
-        <AlertDialogContent className="rounded-[2rem] border-none shadow-2xl p-8">
+        <AlertDialogContent className="w-[95vw] rounded-[2rem] border-none shadow-2xl p-8 max-h-[90vh] overflow-y-auto">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-2xl font-headline font-bold text-destructive flex items-center gap-3">
               <AlertTriangle className="w-6 h-6" /> {t.confirmClear}
