@@ -81,7 +81,7 @@ export function TransactionModal({ isOpen, onClose, type, categories, lang, onAd
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] rounded-[2rem] p-6 md:p-8 border-none shadow-2xl">
+      <DialogContent className="w-[95vw] sm:max-w-[425px] rounded-[2rem] p-6 md:p-8 border-none shadow-2xl max-h-[90vh] overflow-y-auto custom-scrollbar">
         <DialogHeader>
           <DialogTitle className={`text-2xl md:text-3xl font-headline font-bold mb-4 ${type === 'income' ? 'text-income' : 'text-expense'}`}>
             {type === 'income' ? t.income : t.expense}

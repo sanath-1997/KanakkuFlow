@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState, useEffect } from 'react';
@@ -52,7 +51,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[450px] rounded-[2rem] h-[85vh] max-h-[700px] flex flex-col overflow-hidden p-0 gap-0 border-none shadow-2xl">
+      <DialogContent className="w-[95vw] sm:max-w-[450px] rounded-[2rem] h-[85vh] max-h-[700px] flex flex-col overflow-hidden p-0 gap-0 border-none shadow-2xl">
         <DialogHeader className="px-8 pt-8 pb-4 shrink-0">
           <DialogTitle className="text-2xl font-headline flex items-center gap-2">
             <Tag className="w-6 h-6 text-primary" /> {t.categoryStudio}
@@ -62,7 +61,7 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
         <Tabs 
           value={activeTab} 
           onValueChange={(v) => setActiveTab(v as any)} 
-          className="w-full flex-1 flex flex-col px-8 overflow-hidden min-h-0"
+          className="w-full flex-1 flex flex-col px-4 sm:px-8 overflow-hidden min-h-0"
         >
           {mode === 'all' && (
             <TabsList className="grid grid-cols-2 mb-6 rounded-xl bg-muted/50 p-1 shrink-0">
@@ -75,9 +74,9 @@ export function CategoryStudio({ isOpen, onClose, categories, lang, onAdd, onRem
             </TabsList>
           )}
 
-          <div className="flex-1 overflow-y-auto space-y-6 pb-8 pr-2 custom-scrollbar min-h-0">
+          <div className="flex-1 overflow-y-auto space-y-6 pb-8 pr-1 custom-scrollbar min-h-0">
             {/* Input Form */}
-            <div className="bg-muted/30 p-5 rounded-2xl space-y-4 border border-border/50 shrink-0">
+            <div className="bg-muted/30 p-4 sm:p-5 rounded-2xl space-y-4 border border-border/50 shrink-0">
               <div className="space-y-2">
                 <Label className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">{t.categoryName}</Label>
                 <Input 
