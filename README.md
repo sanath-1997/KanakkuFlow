@@ -20,47 +20,29 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
 - **Icons**: Lucide React
 - **Charts**: Recharts
 
-## Getting Started
+## Push to GitHub
 
-### Prerequisites
+To upload this application to your GitHub account:
 
-- Node.js 18+ 
-- npm or yarn
+1. **Create a Repository**:
+   - Go to [GitHub](https://github.com/new) and create a new repository.
+   - Do NOT initialize it with a README, license, or gitignore.
 
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone <your-github-repo-url>
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Deployment to Vercel
-
-1. **Push to GitHub**:
-   - Create a new repository on GitHub.
-   - Run the following in your terminal:
+2. **Run Git Commands**:
+   - Open your terminal in this project's root directory.
+   - Execute the following commands:
      ```bash
      git init
      git add .
-     git commit -m "Initial commit"
+     git commit -m "feat: initial stable version of Kanakku Flow"
      git branch -M main
-     git remote add origin <your-repo-url>
+     git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
      git push -u origin main
      ```
 
-2. **Deploy on Vercel**:
+## Deployment to Vercel
+
+1. **Deploy on Vercel**:
    - Go to [Vercel](https://vercel.com) and click **"New Project"**.
    - Import your GitHub repository.
    - Click **Deploy**.
