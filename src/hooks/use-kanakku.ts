@@ -18,32 +18,36 @@ export interface Transaction {
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
-  // Expense Categories
-  { id: 'e1', name: 'Food & Dining', emoticon: '🍔', type: 'expense' },
-  { id: 'e2', name: 'Groceries', emoticon: '🛒', type: 'expense' },
-  { id: 'e3', name: 'Rent & Housing', emoticon: '🏠', type: 'expense' },
-  { id: 'e4', name: 'Transportation', emoticon: '🚗', type: 'expense' },
-  { id: 'e5', name: 'Bills & Utilities', emoticon: '💡', type: 'expense' },
-  { id: 'e6', name: 'Mobile & Internet', emoticon: '📱', type: 'expense' },
-  { id: 'e7', name: 'Shopping', emoticon: '🛍️', type: 'expense' },
-  { id: 'e8', name: 'Health', emoticon: '🏥', type: 'expense' },
-  { id: 'e9', name: 'Education', emoticon: '🎓', type: 'expense' },
-  { id: 'e10', name: 'Entertainment', emoticon: '🎬', type: 'expense' },
-  { id: 'e11', name: 'Travel', emoticon: '✈️', type: 'expense' },
-  { id: 'e12', name: 'Insurance', emoticon: '🛡️', type: 'expense' },
-  { id: 'e13', name: 'Gifts', emoticon: '🎁', type: 'expense' },
-  { id: 'e14', name: 'Others', emoticon: '📦', type: 'expense' },
-  
-  // Income Categories
+  // Income
   { id: 'i1', name: 'Salary', emoticon: '💰', type: 'income' },
-  { id: 'i2', name: 'Business', emoticon: '🏢', type: 'income' },
+  { id: 'i2', name: 'Business Profit', emoticon: '🏢', type: 'income' },
   { id: 'i3', name: 'Freelance', emoticon: '👨‍💻', type: 'income' },
   { id: 'i4', name: 'Dividends', emoticon: '📈', type: 'income' },
-  { id: 'i5', name: 'Rent Income', emoticon: '🏘️', type: 'income' },
-  { id: 'i6', name: 'Interest', emoticon: '🏦', type: 'income' },
-  { id: 'i7', name: 'Grants', emoticon: '📜', type: 'income' },
-  { id: 'i8', name: 'Refunds', emoticon: '🔄', type: 'income' },
-  { id: 'i9', name: 'Other Income', emoticon: '💵', type: 'income' },
+  { id: 'i5', name: 'Rent Income', emoticon: '🏠', type: 'income' },
+  { id: 'i6', name: 'Investment Returns', emoticon: '📊', type: 'income' },
+  { id: 'i7', name: 'Gift Income', emoticon: '🎁', type: 'income' },
+  { id: 'i8', name: 'Commission', emoticon: '💸', type: 'income' },
+  { id: 'i9', name: 'Bonus', emoticon: '✨', type: 'income' },
+  { id: 'i10', name: 'Others', emoticon: '💵', type: 'income' },
+
+  // Expense
+  { id: 'e1', name: 'Food & Dining', emoticon: '🍔', type: 'expense' },
+  { id: 'e2', name: 'Groceries', emoticon: '🛒', type: 'expense' },
+  { id: 'e3', name: 'Transportation', emoticon: '🚗', type: 'expense' },
+  { id: 'e4', name: 'Rent & Housing', emoticon: '🏠', type: 'expense' },
+  { id: 'e5', name: 'Electricity Bill', emoticon: '💡', type: 'expense' },
+  { id: 'e6', name: 'Water Bill', emoticon: '🚰', type: 'expense' },
+  { id: 'e7', name: 'Internet & Mobile', emoticon: '📶', type: 'expense' },
+  { id: 'e8', name: 'Shopping', emoticon: '🛍️', type: 'expense' },
+  { id: 'e9', name: 'Healthcare', emoticon: '🏥', type: 'expense' },
+  { id: 'e10', name: 'Education', emoticon: '📚', type: 'expense' },
+  { id: 'e11', name: 'Entertainment', emoticon: '🎮', type: 'expense' },
+  { id: 'e12', name: 'Travel', emoticon: '✈️', type: 'expense' },
+  { id: 'e13', name: 'Subscriptions', emoticon: '💳', type: 'expense' },
+  { id: 'e14', name: 'Insurance', emoticon: '🛡️', type: 'expense' },
+  { id: 'e15', name: 'Gifts & Charity', emoticon: '💝', type: 'expense' },
+  { id: 'e16', name: 'Maintenance', emoticon: '🔧', type: 'expense' },
+  { id: 'e17', name: 'Others', emoticon: '📦', type: 'expense' },
 ];
 
 export function useKanakku() {
@@ -80,12 +84,14 @@ export function useKanakku() {
         if (Array.isArray(parsed) && parsed.length > 0) {
           setCategories(parsed);
         } else {
+          // If stored categories are empty, restore defaults
           setCategories(DEFAULT_CATEGORIES);
         }
       } catch (e) {
         setCategories(DEFAULT_CATEGORIES);
       }
     } else {
+      // First time use, set defaults
       setCategories(DEFAULT_CATEGORIES);
     }
     

@@ -22,14 +22,13 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
 
 ## Push to GitHub
 
-To upload this application to your GitHub account:
+To upload this application to your GitHub account, open your terminal in the root directory and follow these steps:
 
 1. **Create a Repository**:
-   - Go to [GitHub](https://github.com/new) and create a new repository.
-   - Do NOT initialize it with a README, license, or gitignore.
+   - Go to [GitHub](https://github.com/new) and create a new repository (e.g., `kanakku-flow`).
+   - Do NOT initialize it with a README or .gitignore.
 
-2. **Run Git Commands**:
-   - Open your terminal in this project's root directory.
+2. **Initialize and Push**:
    - Execute the following commands:
      ```bash
      git init
