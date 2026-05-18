@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo } from 'react';
 import type { Language } from '@/lib/translations';
 import { isSameDay, parseISO } from 'date-fns';
@@ -93,6 +92,8 @@ export function useKanakku() {
       } catch (e) {
         setCategories(DEFAULT_CATEGORIES);
       }
+    } else {
+      setCategories(DEFAULT_CATEGORIES);
     }
     
     setIsHydrated(true);
@@ -137,7 +138,10 @@ export function useKanakku() {
     setCategories(DEFAULT_CATEGORIES);
     setBudget(0);
     setDailyLimit(0);
-    localStorage.clear();
+    localStorage.removeItem('kanakku-txs');
+    localStorage.removeItem('kanakku-cats');
+    localStorage.removeItem('kanakku-budget');
+    localStorage.removeItem('kanakku-daily-limit');
   };
 
   const balance = useMemo(() => {
@@ -153,7 +157,9 @@ export function useKanakku() {
       .filter(tx => {
         if (tx.type !== 'expense') return false;
         try {
-          return isSameDay(parseISO(tx.date), now);
+          // Use new Date() for safer parsing and reset time to compare strictly by day
+          const txDate = new Date(tx.date);
+          return isSameDay(txDate, now);
         } catch {
           return false;
         }

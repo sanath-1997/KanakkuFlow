@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState } from 'react';
@@ -121,7 +120,7 @@ export default function Home() {
     })
     .reduce((acc, tx) => acc + tx.amount, 0);
 
-  const budgetProgress = budget > 0 ? (currentMonthExpenses / budget) * 100 : 0;
+  const budgetProgress = budget > 0 ? Math.min((currentMonthExpenses / budget) * 100, 100) : 0;
   const isOverBudget = budget > 0 && currentMonthExpenses > budget;
 
   const dailyProgress = dailyLimit > 0 ? Math.min((todayExpenses / dailyLimit) * 100, 100) : 0;
