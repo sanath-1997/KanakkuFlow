@@ -29,7 +29,8 @@ import {
   AlertTriangle,
   Target,
   Coins,
-  Zap
+  Zap,
+  RotateCcw
 } from 'lucide-react';
 import { format, isSameDay, startOfMonth, endOfMonth } from 'date-fns';
 import {
@@ -329,14 +330,24 @@ export default function Home() {
           </Button>
 
           {dailyLimit > 0 && (
-            <Card className="rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6 animate-in fade-in slide-in-from-top-4 duration-500">
+            <Card className="rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6 animate-in fade-in slide-in-from-top-4 duration-500 relative">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500">
                     <Zap className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm">{t.dailyLimit}</h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-bold text-sm">{t.dailyLimit}</h3>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-6 w-6 rounded-full text-muted-foreground hover:text-amber-500"
+                        onClick={() => setDailyLimit(0)}
+                      >
+                        <RotateCcw className="w-3 h-3" />
+                      </Button>
+                    </div>
                     <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{t.today}: {currency}{dailyLimit.toLocaleString()}</p>
                   </div>
                 </div>

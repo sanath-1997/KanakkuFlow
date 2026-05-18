@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { Language } from '@/lib/translations';
-import { isSameDay, parseISO } from 'date-fns';
+import { isSameDay } from 'date-fns';
 
 export interface Category {
   id: string;
@@ -19,35 +19,35 @@ export interface Transaction {
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
-  // Income
+  // Income - Reliable & Relatable
   { id: 'i1', name: 'Salary', emoticon: '💰', type: 'income' },
-  { id: 'i2', name: 'Business Profit', emoticon: '🏢', type: 'income' },
-  { id: 'i3', name: 'Freelance', emoticon: '👨‍💻', type: 'income' },
-  { id: 'i4', name: 'Dividends', emoticon: '📈', type: 'income' },
-  { id: 'i5', name: 'Rent Income', emoticon: '🏠', type: 'income' },
-  { id: 'i6', name: 'Investment Returns', emoticon: '📊', type: 'income' },
-  { id: 'i7', name: 'Gift Income', emoticon: '🎁', type: 'income' },
-  { id: 'i8', name: 'Commission', emoticon: '💸', type: 'income' },
-  { id: 'i9', name: 'Bonus', emoticon: '✨', type: 'income' },
-  { id: 'i10', name: 'Others', emoticon: '💵', type: 'income' },
+  { id: 'i2', name: 'Freelance', emoticon: '👨‍💻', type: 'income' },
+  { id: 'i3', name: 'Business Profit', emoticon: '🏢', type: 'income' },
+  { id: 'i4', name: 'Investment Returns', emoticon: '📈', type: 'income' },
+  { id: 'i5', name: 'Rental Income', emoticon: '🏠', type: 'income' },
+  { id: 'i6', name: 'Gift Money', emoticon: '🎁', type: 'income' },
+  { id: 'i7', name: 'Bonus', emoticon: '✨', type: 'income' },
+  { id: 'i8', name: 'Sale of Assets', emoticon: '🏷️', type: 'income' },
+  { id: 'i9', name: 'Dividends', emoticon: '📊', type: 'income' },
+  { id: 'i10', name: 'Cashback', emoticon: '🧧', type: 'income' },
 
-  // Expense
+  // Expense - Comprehensive & Non-overlapping
   { id: 'e1', name: 'Food & Dining', emoticon: '🍔', type: 'expense' },
   { id: 'e2', name: 'Groceries', emoticon: '🛒', type: 'expense' },
-  { id: 'e3', name: 'Transportation', emoticon: '🚗', type: 'expense' },
-  { id: 'e4', name: 'Rent & Housing', emoticon: '🏠', type: 'expense' },
-  { id: 'e5', name: 'Electricity Bill', emoticon: '💡', type: 'expense' },
-  { id: 'e6', name: 'Water Bill', emoticon: '🚰', type: 'expense' },
-  { id: 'e7', name: 'Internet & Mobile', emoticon: '📶', type: 'expense' },
-  { id: 'e8', name: 'Shopping', emoticon: '🛍️', type: 'expense' },
-  { id: 'e9', name: 'Healthcare', emoticon: '🏥', type: 'expense' },
-  { id: 'e10', name: 'Education', emoticon: '📚', type: 'expense' },
-  { id: 'e11', name: 'Entertainment', emoticon: '🎮', type: 'expense' },
-  { id: 'e12', name: 'Travel', emoticon: '✈️', type: 'expense' },
-  { id: 'e13', name: 'Subscriptions', emoticon: '💳', type: 'expense' },
-  { id: 'e14', name: 'Insurance', emoticon: '🛡️', type: 'expense' },
-  { id: 'e15', name: 'Gifts & Charity', emoticon: '💝', type: 'expense' },
-  { id: 'e16', name: 'Maintenance', emoticon: '🔧', type: 'expense' },
+  { id: 'e3', name: 'Rent & Housing', emoticon: '🏠', type: 'expense' },
+  { id: 'e4', name: 'Utilities & Bills', emoticon: '💡', type: 'expense' },
+  { id: 'e5', name: 'Transportation', emoticon: '🚗', type: 'expense' },
+  { id: 'e6', name: 'Shopping & Fashion', emoticon: '🛍️', type: 'expense' },
+  { id: 'e7', name: 'Health & Medical', emoticon: '🏥', type: 'expense' },
+  { id: 'e8', name: 'Education', emoticon: '📚', type: 'expense' },
+  { id: 'e9', name: 'Entertainment', emoticon: '🎮', type: 'expense' },
+  { id: 'e10', name: 'Travel & Vacation', emoticon: '✈️', type: 'expense' },
+  { id: 'e11', name: 'Insurance', emoticon: '🛡️', type: 'expense' },
+  { id: 'e12', name: 'Subscritpions', emoticon: '💳', type: 'expense' },
+  { id: 'e13', name: 'Personal Care', emoticon: '✂️', type: 'expense' },
+  { id: 'e14', name: 'Fitness & Sports', emoticon: '🏋️', type: 'expense' },
+  { id: 'e15', name: 'Maintenance & Repairs', emoticon: '🔧', type: 'expense' },
+  { id: 'e16', name: 'Gifts & Charity', emoticon: '💝', type: 'expense' },
   { id: 'e17', name: 'Others', emoticon: '📦', type: 'expense' },
 ];
 
@@ -84,6 +84,7 @@ export function useKanakku() {
     if (storedCategories) {
       try {
         const parsed = JSON.parse(storedCategories);
+        // Ensure that even if empty or corrupted, we have a list of categories
         if (Array.isArray(parsed) && parsed.length > 0) {
           setCategories(parsed);
         } else {
@@ -157,7 +158,6 @@ export function useKanakku() {
       .filter(tx => {
         if (tx.type !== 'expense') return false;
         try {
-          // Use new Date() for safer parsing and reset time to compare strictly by day
           const txDate = new Date(tx.date);
           return isSameDay(txDate, now);
         } catch {
