@@ -122,10 +122,10 @@ export default function Home() {
     .reduce((acc, tx) => acc + tx.amount, 0);
 
   const budgetProgress = budget > 0 ? (currentMonthExpenses / budget) * 100 : 0;
-  const isOverBudget = currentMonthExpenses > budget;
+  const isOverBudget = budget > 0 && currentMonthExpenses > budget;
 
-  const dailyProgress = dailyLimit > 0 ? (todayExpenses / dailyLimit) * 100 : 0;
-  const isOverDailyLimit = todayExpenses > dailyLimit;
+  const dailyProgress = dailyLimit > 0 ? Math.min((todayExpenses / dailyLimit) * 100, 100) : 0;
+  const isOverDailyLimit = dailyLimit > 0 && todayExpenses > dailyLimit;
 
   const openStudio = (mode: 'income' | 'expense' | 'all') => {
     setStudioMode(mode);
@@ -265,7 +265,7 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <div className="mb-8">
         {budget > 0 && (
           <Card className="rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6">
             <div className="flex items-center justify-between mb-4">
@@ -288,35 +288,6 @@ export default function Home() {
               </div>
             </div>
             <Progress value={budgetProgress} className={`h-2.5 rounded-full ${isOverBudget ? 'bg-destructive/10' : 'bg-primary/10'}`} />
-          </Card>
-        )}
-
-        {dailyLimit > 0 && (
-          <Card className="rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500">
-                  <Zap className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-sm">{t.dailyLimit}</h3>
-                  <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{t.today}: {currency}{dailyLimit.toLocaleString()}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className={`text-[10px] font-bold ${isOverDailyLimit ? 'text-destructive' : 'text-amber-500'}`}>
-                  {isOverDailyLimit ? t.overspent : t.remaining}
-                </span>
-                <p className="text-sm font-headline font-bold">
-                  {currency}{Math.abs(dailyLimit - todayExpenses).toLocaleString()}
-                </p>
-              </div>
-            </div>
-            <Progress 
-              value={dailyProgress} 
-              className={`h-2.5 rounded-full ${isOverDailyLimit ? 'bg-destructive/10' : 'bg-amber-500/10'}`}
-              style={{ backgroundColor: isOverDailyLimit ? 'hsl(var(--destructive) / 0.1)' : 'hsl(45 93% 47% / 0.1)' }}
-            />
           </Card>
         )}
       </div>
@@ -347,6 +318,45 @@ export default function Home() {
           <Tag className="w-4 h-4" />
           <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{t.manageCategories}</span>
         </Button>
+
+        <div className="flex flex-col gap-4">
+          <Button 
+            variant="outline"
+            onClick={() => { setTempDailyLimit(dailyLimit.toString()); setIsDailyLimitDialogOpen(true); }}
+            className="flex items-center justify-center gap-3 h-14 md:h-16 rounded-2xl text-amber-600 hover:bg-amber-50 transition-all border-2 border-amber-200 bg-white shadow-sm w-full"
+          >
+            <Zap className="w-4 h-4" />
+            <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">{t.setDailyLimit}</span>
+          </Button>
+
+          {dailyLimit > 0 && (
+            <Card className="rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6 animate-in fade-in slide-in-from-top-4 duration-500">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500">
+                    <Zap className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm">{t.dailyLimit}</h3>
+                    <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{t.today}: {currency}{dailyLimit.toLocaleString()}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className={`text-[10px] font-bold ${isOverDailyLimit ? 'text-destructive' : 'text-amber-500'}`}>
+                    {isOverDailyLimit ? t.overspent : t.remaining}
+                  </span>
+                  <p className="text-sm font-headline font-bold">
+                    {currency}{Math.abs(dailyLimit - todayExpenses).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+              <Progress 
+                value={dailyProgress} 
+                className={`h-2.5 rounded-full ${isOverDailyLimit ? 'bg-destructive/10' : 'bg-amber-500/10'}`}
+              />
+            </Card>
+          )}
+        </div>
       </div>
 
       <div className="mb-10">
@@ -458,9 +468,8 @@ export default function Home() {
         mode={studioMode}
       />
 
-      {/* Monthly Budget Dialog */}
       <Dialog open={isBudgetDialogOpen} onOpenChange={setIsBudgetDialogOpen}>
-        <DialogContent className="w-[95vw] rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[95vw] rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px]">
           <DialogHeader>
             <DialogTitle className="text-2xl font-headline font-bold flex items-center gap-3">
               <Target className="w-6 h-6 text-primary" /> {t.setBudget}
@@ -488,7 +497,7 @@ export default function Home() {
                 setBudget(parseFloat(tempBudget) || 0);
                 setIsBudgetDialogOpen(false);
               }}
-              className="h-12 rounded-xl flex-1 font-bold bg-primary shadow-lg shadow-primary/20"
+              className="h-12 rounded-xl flex-1 font-bold bg-primary shadow-lg shadow-primary/20 text-white"
             >
               {t.save}
             </Button>
@@ -496,9 +505,8 @@ export default function Home() {
         </DialogContent>
       </Dialog>
 
-      {/* Daily Limit Dialog */}
       <Dialog open={isDailyLimitDialogOpen} onOpenChange={setIsDailyLimitDialogOpen}>
-        <DialogContent className="w-[95vw] rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[95vw] rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px]">
           <DialogHeader>
             <DialogTitle className="text-2xl font-headline font-bold flex items-center gap-3">
               <Zap className="w-6 h-6 text-amber-500" /> {t.setDailyLimit}

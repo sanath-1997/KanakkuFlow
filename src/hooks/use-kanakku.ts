@@ -1,7 +1,7 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import type { Language } from '@/lib/translations';
-import { isSameDay } from 'date-fns';
+import { isSameDay, parseISO } from 'date-fns';
 
 export interface Category {
   id: string;
@@ -62,7 +62,6 @@ export function useKanakku() {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    // Initial load from LocalStorage
     const storedLang = localStorage.getItem('kanakku-lang') as Language;
     const storedTransactions = localStorage.getItem('kanakku-txs');
     const storedCategories = localStorage.getItem('kanakku-cats');
@@ -94,8 +93,6 @@ export function useKanakku() {
       } catch (e) {
         setCategories(DEFAULT_CATEGORIES);
       }
-    } else {
-      setCategories(DEFAULT_CATEGORIES);
     }
     
     setIsHydrated(true);
@@ -140,19 +137,29 @@ export function useKanakku() {
     setCategories(DEFAULT_CATEGORIES);
     setBudget(0);
     setDailyLimit(0);
-    localStorage.removeItem('kanakku-txs');
-    localStorage.removeItem('kanakku-cats');
-    localStorage.removeItem('kanakku-budget');
-    localStorage.removeItem('kanakku-daily-limit');
+    localStorage.clear();
   };
 
-  const balance = transactions.reduce((acc, tx) => {
-    return tx.type === 'income' ? acc + tx.amount : acc - tx.amount;
-  }, 0);
+  const balance = useMemo(() => {
+    return transactions.reduce((acc, tx) => {
+      return tx.type === 'income' ? acc + tx.amount : acc - tx.amount;
+    }, 0);
+  }, [transactions]);
 
-  const todayExpenses = transactions
-    .filter(tx => tx.type === 'expense' && isSameDay(new Date(tx.date), new Date()))
-    .reduce((acc, tx) => acc + tx.amount, 0);
+  const todayExpenses = useMemo(() => {
+    if (!isHydrated) return 0;
+    const now = new Date();
+    return transactions
+      .filter(tx => {
+        if (tx.type !== 'expense') return false;
+        try {
+          return isSameDay(parseISO(tx.date), now);
+        } catch {
+          return false;
+        }
+      })
+      .reduce((acc, tx) => acc + tx.amount, 0);
+  }, [transactions, isHydrated]);
 
   return {
     lang,
