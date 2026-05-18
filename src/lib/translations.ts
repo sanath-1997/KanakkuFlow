@@ -47,6 +47,10 @@ export const translations = {
     changeCurrency: 'Change Currency',
     categoryRequired: 'Please select a category',
     error: 'Error',
+    setDailyLimit: 'Set Daily Limit',
+    dailyLimit: 'Daily Limit',
+    dailyUsage: 'Daily Usage',
+    today: 'Today',
   },
   ta: {
     welcome: 'கணக்கு ஃப்ளோவிற்கு வரவேற்கிறோம்',
@@ -93,6 +97,10 @@ export const translations = {
     changeCurrency: 'நாணயத்தை மாற்றவும்',
     categoryRequired: 'வகையைத் தேர்ந்தெடுக்கவும்',
     error: 'பிழை',
+    setDailyLimit: 'தினசரி பட்ஜெட்டை அமைக்கவும்',
+    dailyLimit: 'தினசரி பட்ஜெட்',
+    dailyUsage: 'தினசரி பயன்பாடு',
+    today: 'இன்று',
   },
   ml: {
     welcome: 'കണക്ക് ഫ്ലോയിലേക്ക് സ്വാഗതം',
@@ -139,5 +147,9 @@ export const translations = {
     changeCurrency: 'കറൻസി മാറ്റുക',
     categoryRequired: 'ഒരു വിഭാഗം തിരഞ്ഞെടുക്കുക',
     error: 'പിശക്',
+    setDailyLimit: 'പ്രതിദിന ബജറ്റ് സജ്ജമാക്കുക',
+    dailyLimit: 'പ്രതിദിന ബജറ്റ്',
+    dailyUsage: 'പ്രതിദിന ഉപയോഗം',
+    today: 'ഇന്ന്',
   }
 };

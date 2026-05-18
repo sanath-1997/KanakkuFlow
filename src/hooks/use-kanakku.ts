@@ -1,5 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import type { Language } from '@/lib/translations';
+import { isSameDay } from 'date-fns';
 
 export interface Category {
   id: string;
@@ -55,6 +57,7 @@ export function useKanakku() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
   const [budget, setBudget] = useState<number>(0);
+  const [dailyLimit, setDailyLimit] = useState<number>(0);
   const [currency, setCurrency] = useState<string>('₹');
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -64,10 +67,12 @@ export function useKanakku() {
     const storedTransactions = localStorage.getItem('kanakku-txs');
     const storedCategories = localStorage.getItem('kanakku-cats');
     const storedBudget = localStorage.getItem('kanakku-budget');
+    const storedDailyLimit = localStorage.getItem('kanakku-daily-limit');
     const storedCurrency = localStorage.getItem('kanakku-currency');
 
     if (storedLang) setLang(storedLang);
     if (storedBudget) setBudget(parseFloat(storedBudget));
+    if (storedDailyLimit) setDailyLimit(parseFloat(storedDailyLimit));
     if (storedCurrency) setCurrency(storedCurrency);
     
     if (storedTransactions) {
@@ -84,14 +89,12 @@ export function useKanakku() {
         if (Array.isArray(parsed) && parsed.length > 0) {
           setCategories(parsed);
         } else {
-          // If stored categories are empty, restore defaults
           setCategories(DEFAULT_CATEGORIES);
         }
       } catch (e) {
         setCategories(DEFAULT_CATEGORIES);
       }
     } else {
-      // First time use, set defaults
       setCategories(DEFAULT_CATEGORIES);
     }
     
@@ -104,9 +107,10 @@ export function useKanakku() {
       localStorage.setItem('kanakku-txs', JSON.stringify(transactions));
       localStorage.setItem('kanakku-cats', JSON.stringify(categories));
       localStorage.setItem('kanakku-budget', budget.toString());
+      localStorage.setItem('kanakku-daily-limit', dailyLimit.toString());
       localStorage.setItem('kanakku-currency', currency);
     }
-  }, [lang, transactions, categories, budget, currency, isHydrated]);
+  }, [lang, transactions, categories, budget, dailyLimit, currency, isHydrated]);
 
   const addTransaction = (tx: Omit<Transaction, 'id'>) => {
     const newId = Math.random().toString(36).substring(2, 11);
@@ -135,14 +139,20 @@ export function useKanakku() {
     setTransactions([]);
     setCategories(DEFAULT_CATEGORIES);
     setBudget(0);
+    setDailyLimit(0);
     localStorage.removeItem('kanakku-txs');
     localStorage.removeItem('kanakku-cats');
     localStorage.removeItem('kanakku-budget');
+    localStorage.removeItem('kanakku-daily-limit');
   };
 
   const balance = transactions.reduce((acc, tx) => {
     return tx.type === 'income' ? acc + tx.amount : acc - tx.amount;
   }, 0);
+
+  const todayExpenses = transactions
+    .filter(tx => tx.type === 'expense' && isSameDay(new Date(tx.date), new Date()))
+    .reduce((acc, tx) => acc + tx.amount, 0);
 
   return {
     lang,
@@ -157,6 +167,9 @@ export function useKanakku() {
     balance,
     budget,
     setBudget,
+    dailyLimit,
+    setDailyLimit,
+    todayExpenses,
     currency,
     setCurrency,
     isHydrated

@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState } from 'react';
@@ -28,7 +29,8 @@ import {
   Download,
   AlertTriangle,
   Target,
-  Coins
+  Coins,
+  Zap
 } from 'lucide-react';
 import { format, isSameDay, startOfMonth, endOfMonth } from 'date-fns';
 import {
@@ -80,6 +82,9 @@ export default function Home() {
     balance,
     budget,
     setBudget,
+    dailyLimit,
+    setDailyLimit,
+    todayExpenses,
     currency,
     setCurrency,
     isHydrated
@@ -92,7 +97,9 @@ export default function Home() {
   const [filterDate, setFilterDate] = useState<Date | undefined>(undefined);
   const [isClearAlertOpen, setIsClearAlertOpen] = useState(false);
   const [isBudgetDialogOpen, setIsBudgetDialogOpen] = useState(false);
+  const [isDailyLimitDialogOpen, setIsDailyLimitDialogOpen] = useState(false);
   const [tempBudget, setTempBudget] = useState(budget.toString());
+  const [tempDailyLimit, setTempDailyLimit] = useState(dailyLimit.toString());
 
   if (!isHydrated) return null;
   if (!lang) return <LanguageSelector onSelect={setLang} />;
@@ -116,6 +123,9 @@ export default function Home() {
 
   const budgetProgress = budget > 0 ? (currentMonthExpenses / budget) * 100 : 0;
   const isOverBudget = currentMonthExpenses > budget;
+
+  const dailyProgress = dailyLimit > 0 ? (todayExpenses / dailyLimit) * 100 : 0;
+  const isOverDailyLimit = todayExpenses > dailyLimit;
 
   const openStudio = (mode: 'income' | 'expense' | 'all') => {
     setStudioMode(mode);
@@ -179,6 +189,11 @@ export default function Home() {
             <DropdownMenuItem onClick={() => { setTempBudget(budget.toString()); setIsBudgetDialogOpen(true); }} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
               <Target className="w-4 h-4" />
               <span className="font-semibold">{t.setBudget}</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem onClick={() => { setTempDailyLimit(dailyLimit.toString()); setIsDailyLimitDialogOpen(true); }} className="gap-2 p-3 rounded-xl focus:bg-primary/5 focus:text-primary transition-colors cursor-pointer">
+              <Zap className="w-4 h-4" />
+              <span className="font-semibold">{t.setDailyLimit}</span>
             </DropdownMenuItem>
 
             <DropdownMenuSub>
@@ -250,30 +265,61 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      {budget > 0 && (
-        <Card className="mb-8 rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                <Target className="w-5 h-5" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        {budget > 0 && (
+          <Card className="rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                  <Target className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm">{t.budget}</h3>
+                  <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{t.monthlyLimit}: {currency}{budget.toLocaleString()}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-bold text-sm">{t.budget}</h3>
-                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{t.monthlyLimit}: {currency}{budget.toLocaleString()}</p>
+              <div className="text-right">
+                <span className={`text-[10px] font-bold ${isOverBudget ? 'text-destructive' : 'text-primary'}`}>
+                  {isOverBudget ? t.overspent : t.remaining}
+                </span>
+                <p className="text-sm font-headline font-bold">
+                  {currency}{Math.abs(budget - currentMonthExpenses).toLocaleString()}
+                </p>
               </div>
             </div>
-            <div className="text-right">
-              <span className={`text-xs font-bold ${isOverBudget ? 'text-destructive' : 'text-primary'}`}>
-                {isOverBudget ? t.overspent : t.remaining}
-              </span>
-              <p className="text-base md:text-lg font-headline font-bold">
-                {currency}{Math.abs(budget - currentMonthExpenses).toLocaleString()}
-              </p>
+            <Progress value={budgetProgress} className={`h-2.5 rounded-full ${isOverBudget ? 'bg-destructive/10' : 'bg-primary/10'}`} />
+          </Card>
+        )}
+
+        {dailyLimit > 0 && (
+          <Card className="rounded-3xl border-none shadow-sm bg-white overflow-hidden p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm">{t.dailyLimit}</h3>
+                  <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{t.today}: {currency}{dailyLimit.toLocaleString()}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className={`text-[10px] font-bold ${isOverDailyLimit ? 'text-destructive' : 'text-amber-500'}`}>
+                  {isOverDailyLimit ? t.overspent : t.remaining}
+                </span>
+                <p className="text-sm font-headline font-bold">
+                  {currency}{Math.abs(dailyLimit - todayExpenses).toLocaleString()}
+                </p>
+              </div>
             </div>
-          </div>
-          <Progress value={budgetProgress} className={`h-2.5 rounded-full ${isOverBudget ? 'bg-destructive/10' : 'bg-primary/10'}`} />
-        </Card>
-      )}
+            <Progress 
+              value={dailyProgress} 
+              className={`h-2.5 rounded-full ${isOverDailyLimit ? 'bg-destructive/10' : 'bg-amber-500/10'}`}
+              style={{ backgroundColor: isOverDailyLimit ? 'hsl(var(--destructive) / 0.1)' : 'hsl(45 93% 47% / 0.1)' }}
+            />
+          </Card>
+        )}
+      </div>
 
       <div className="flex flex-col gap-4 mb-10">
         <div className="grid grid-cols-2 gap-4">
@@ -412,6 +458,7 @@ export default function Home() {
         mode={studioMode}
       />
 
+      {/* Monthly Budget Dialog */}
       <Dialog open={isBudgetDialogOpen} onOpenChange={setIsBudgetDialogOpen}>
         <DialogContent className="w-[95vw] rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -442,6 +489,44 @@ export default function Home() {
                 setIsBudgetDialogOpen(false);
               }}
               className="h-12 rounded-xl flex-1 font-bold bg-primary shadow-lg shadow-primary/20"
+            >
+              {t.save}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Daily Limit Dialog */}
+      <Dialog open={isDailyLimitDialogOpen} onOpenChange={setIsDailyLimitDialogOpen}>
+        <DialogContent className="w-[95vw] rounded-[2rem] border-none shadow-2xl p-8 sm:max-w-[400px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-headline font-bold flex items-center gap-3">
+              <Zap className="w-6 h-6 text-amber-500" /> {t.setDailyLimit}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-6 space-y-4">
+            <div className="space-y-2">
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.dailyLimit}</Label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-muted-foreground">{currency}</span>
+                <Input 
+                  type="number" 
+                  value={tempDailyLimit} 
+                  onChange={(e) => setTempDailyLimit(e.target.value)}
+                  className="pl-10 h-14 rounded-2xl bg-muted/30 border-none font-headline font-bold text-xl"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter className="gap-3">
+            <Button variant="ghost" onClick={() => setIsDailyLimitDialogOpen(false)} className="h-12 rounded-xl flex-1 font-bold">{t.cancel}</Button>
+            <Button 
+              onClick={() => {
+                setDailyLimit(parseFloat(tempDailyLimit) || 0);
+                setIsDailyLimitDialogOpen(false);
+              }}
+              className="h-12 rounded-xl flex-1 font-bold bg-amber-500 shadow-lg shadow-amber-500/20 text-white hover:bg-amber-600"
             >
               {t.save}
             </Button>
