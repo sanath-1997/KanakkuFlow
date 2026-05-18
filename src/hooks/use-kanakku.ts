@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useMemo } from 'react';
 import type { Language } from '@/lib/translations';
 import { isSameDay } from 'date-fns';
@@ -19,7 +20,7 @@ export interface Transaction {
 }
 
 const DEFAULT_CATEGORIES: Category[] = [
-  // Income - Reliable & Relatable
+  // Income
   { id: 'i1', name: 'Salary', emoticon: '💰', type: 'income' },
   { id: 'i2', name: 'Freelance', emoticon: '👨‍💻', type: 'income' },
   { id: 'i3', name: 'Business Profit', emoticon: '🏢', type: 'income' },
@@ -31,7 +32,7 @@ const DEFAULT_CATEGORIES: Category[] = [
   { id: 'i9', name: 'Dividends', emoticon: '📊', type: 'income' },
   { id: 'i10', name: 'Cashback', emoticon: '🧧', type: 'income' },
 
-  // Expense - Comprehensive & Non-overlapping
+  // Expense
   { id: 'e1', name: 'Food & Dining', emoticon: '🍔', type: 'expense' },
   { id: 'e2', name: 'Groceries', emoticon: '🛒', type: 'expense' },
   { id: 'e3', name: 'Rent & Housing', emoticon: '🏠', type: 'expense' },
@@ -43,7 +44,7 @@ const DEFAULT_CATEGORIES: Category[] = [
   { id: 'e9', name: 'Entertainment', emoticon: '🎮', type: 'expense' },
   { id: 'e10', name: 'Travel & Vacation', emoticon: '✈️', type: 'expense' },
   { id: 'e11', name: 'Insurance', emoticon: '🛡️', type: 'expense' },
-  { id: 'e12', name: 'Subscritpions', emoticon: '💳', type: 'expense' },
+  { id: 'e12', name: 'Subscriptions', emoticon: '💳', type: 'expense' },
   { id: 'e13', name: 'Personal Care', emoticon: '✂️', type: 'expense' },
   { id: 'e14', name: 'Fitness & Sports', emoticon: '🏋️', type: 'expense' },
   { id: 'e15', name: 'Maintenance & Repairs', emoticon: '🔧', type: 'expense' },
