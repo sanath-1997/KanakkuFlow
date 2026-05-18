@@ -1,3 +1,16 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "pwa-icon-large",
+      "description": "Large PWA icon",
+      "imageUrl": "https://picsum.photos/seed/wallet-app/512/512",
+      "imageHint": "wallet money"
+    },
+    {
+      "id": "pwa-icon-small",
+      "description": "Small PWA icon",
+      "imageUrl": "https://picsum.photos/seed/wallet-app/192/192",
+      "imageHint": "wallet coin"
+    }
+  ]
 }
