@@ -15,12 +15,12 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#2855BF',
     icons: [
       {
-        src: iconSmall?.imageUrl || '/public/Expenses.png',
+        src: iconSmall?.imageUrl || '/Expenses.png',
         sizes: '192x192',
         type: 'image/png',
       },
       {
-        src: iconLarge?.imageUrl || '/public/Expenses.png',
+        src: iconLarge?.imageUrl || '/Expenses.png',
         sizes: '512x512',
         type: 'image/png',
       },
