@@ -1,7 +1,10 @@
-
 import { MetadataRoute } from 'next'
+import { PlaceHolderImages } from '@/lib/placeholder-images'
  
 export default function manifest(): MetadataRoute.Manifest {
+  const iconLarge = PlaceHolderImages.find(img => img.id === 'pwa-icon-large');
+  const iconSmall = PlaceHolderImages.find(img => img.id === 'pwa-icon-small');
+
   return {
     name: 'Kanakku Flow - Smart Expense Manager',
     short_name: 'Kanakku',
@@ -12,12 +15,12 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#2855BF',
     icons: [
       {
-        src: 'https://picsum.photos/seed/wallet-app/192/192',
+        src: iconSmall?.imageUrl || 'https://picsum.photos/seed/wallet-app/192/192',
         sizes: '192x192',
         type: 'image/png',
       },
       {
-        src: 'https://picsum.photos/seed/wallet-app/512/512',
+        src: iconLarge?.imageUrl || 'https://picsum.photos/seed/wallet-app/512/512',
         sizes: '512x512',
         type: 'image/png',
       },

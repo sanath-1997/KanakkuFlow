@@ -4,13 +4,20 @@ Kanakku Flow is a modern, privacy-focused expense manager built with Next.js, Re
 
 ## Features
 
+- **PWA Ready**: Install as a standalone app on your mobile or desktop device.
 - **Multi-language Support**: Seamlessly switch between English, தமிழ், and മലയാളം.
 - **Local Persistence**: Your data stays on your device using LocalStorage.
-- **Budgeting**: Set monthly spending limits and track progress visually with a dashboard progress bar.
-- **Category Studio**: Create and manage custom income and expense categories with emoticon support.
-- **Data Export**: Export your transactions to CSV format for external analysis.
-- **Filtering**: View transactions for specific dates using a built-in calendar filter.
-- **Currency Support**: Switch between multiple currency symbols (₹, $, €, £, ¥).
+- **Budgeting**: Set monthly and daily spending limits.
+- **Category Studio**: Create and manage custom income and expense categories.
+- **Data Export**: Export your transactions to CSV format.
+
+## Customization
+
+### Changing the App Icon
+To use your own icons for the installed app:
+1. Create a `public` directory at the root of the project if it doesn't exist.
+2. Place your icon files (e.g., `icon-192.png` and `icon-512.png`) inside the `public/` folder.
+3. Update the `src/app/manifest.ts` file to point to your new file paths (e.g., `src: '/icon-192.png'`).
 
 ## Tech Stack
 
