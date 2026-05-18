@@ -15,12 +15,12 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#2855BF',
     icons: [
       {
-        src: iconSmall?.imageUrl || 'https://picsum.photos/seed/wallet-app/192/192',
+        src: iconSmall?.imageUrl || '/public/Expenses.png',
         sizes: '192x192',
         type: 'image/png',
       },
       {
-        src: iconLarge?.imageUrl || 'https://picsum.photos/seed/wallet-app/512/512',
+        src: iconLarge?.imageUrl || '/public/Expenses.png',
         sizes: '512x512',
         type: 'image/png',
       },
